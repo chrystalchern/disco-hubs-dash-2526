@@ -516,7 +516,7 @@ def display_comparison(table: pd.DataFrame) -> None:
 
     st.bar_chart(
         chart, 
-        height=320, 
+        height=500, 
         color=["#002676", "#FDB515"], # Berkeley Blue for Pre, Berkeley Gold for Post
         stack=False,  # Unstacks the bars so they group side-by-side for each answer
         sort=False    # Prevents Streamlit from automatically sorting alphabetically
