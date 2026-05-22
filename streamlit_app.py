@@ -550,7 +550,7 @@ def filtered_question_rows(
 
 
 def main() -> None:
-    st.set_page_config(page_title="Discovery Survey Dashboard", layout="wide")
+    st.set_page_config(page_title="Discovery Hubs AY25-26 Student Impact", layout="wide")
     st.title("Discovery Survey Dashboard")
 
     if needs_preprocess():

@@ -1,0 +1,15 @@
+[theme]
+font = "sans serif"
+
+[theme.dark]
+primaryColor = "#004AAE"            # Berkeley medium blue
+backgroundColor = "#0E1117"         # Dark main background
+secondaryBackgroundColor = "#FFC31B" # Berkeley medium gold for sidebar/widget background
+textColor = "#FAFAFA"               # Light text
+
+[theme.light]
+# Your custom Light Mode settings
+primaryColor = "#004AAE"            # erkeley medium blue
+backgroundColor = "#FFFFFF"         # Clean light main background
+secondaryBackgroundColor = "#FFC31B" # Berkeley medium gold for sidebar/widget background
+textColor = "#31333F"               # Dark text for readability
