@@ -1,2 +1,11 @@
 __pycache__/
 .DS_Store
+
+common_cols.json
+post_only_cols.json
+post_only.csv
+pre_only_cols.json
+pre_only.csv
+pre_post_comparison.csv
+environment.yml
+
