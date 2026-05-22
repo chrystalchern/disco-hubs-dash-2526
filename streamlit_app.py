@@ -506,12 +506,22 @@ def comparison_distribution(
     table = table.fillna({"Count Pre": 0, "Percent Pre": 0, "Count Post": 0, "Percent Post": 0})
     table["Count Pre"] = table["Count Pre"].astype(int)
     table["Count Post"] = table["Count Post"].astype(int)
+    table["Response"] = pd.Categorical(table["Response"], categories=labels, ordered=True)
+    table = table.sort_values("Response").reset_index(drop=True)
     return table
 
 
 def display_comparison(table: pd.DataFrame) -> None:
     chart = table.set_index("Response")[["Percent Pre", "Percent Post"]]
-    st.bar_chart(chart, height=320)
+
+    st.bar_chart(
+        chart, 
+        height=320, 
+        color=["#002676", "#FDB515"], # Berkeley Blue for Pre, Berkeley Gold for Post
+        stack=False,  # Unstacks the bars so they group side-by-side for each answer
+        sort=False    # Prevents Streamlit from automatically sorting alphabetically
+    )
+
     st.dataframe(
         table,
         use_container_width=True,
@@ -522,12 +532,14 @@ def display_comparison(table: pd.DataFrame) -> None:
                 format="%.1f%%",
                 min_value=0,
                 max_value=100,
+                color="#002676",
             ),
             "Percent Post": st.column_config.ProgressColumn(
                 "Post %",
                 format="%.1f%%",
                 min_value=0,
                 max_value=100,
+                color="#FDB515",
             ),
         },
     )
