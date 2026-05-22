@@ -1,15 +1,21 @@
 [theme]
 font = "sans serif"
+primaryColor = "#004AAE"            # Berkeley Blue Medium
 
 [theme.dark]
-primaryColor = "#004AAE"            # Berkeley medium blue
 backgroundColor = "#0E1117"         # Dark main background
-secondaryBackgroundColor = "#FFC31B" # Berkeley medium gold for sidebar/widget background
+secondaryBackgroundColor = "#010133" # Berkeley Blue Dark for sidebar/widget background
 textColor = "#FAFAFA"               # Light text
+chartCategoricalColors = [
+    "#004AAE", # Berkeley Blue Medium (1st category)
+    "#FFE88D"  # Berkeley Gold Light (2nd category)
+]
 
 [theme.light]
-# Your custom Light Mode settings
-primaryColor = "#004AAE"            # erkeley medium blue
-backgroundColor = "#FFFFFF"         # Clean light main background
-secondaryBackgroundColor = "#FFC31B" # Berkeley medium gold for sidebar/widget background
-textColor = "#31333F"               # Dark text for readability
+backgroundColor = "#FFFFFF"         # Light main background
+secondaryBackgroundColor = "#FFE88D" # Berkeley Gold Light for sidebar/widget background
+textColor = "#31333F"               # Dark text
+chartCategoricalColors = [
+    "#004AAE", # Berkeley Blue Medium (1st category)
+    "#FC9313"  # Berkeley Gold Dark (2nd category)
+]
