@@ -255,7 +255,7 @@ def multi_select_compare_tables(col,compare_data,labels,out_dirs,filters=None,fi
 
             for fil in filters:
                 fil_name = f"{fil}_{mode}"
-
+                # TODO: possible bug
                 responses_exploded = col_data[[col_name, fil_name]].copy()
                 responses_exploded[col_name] = (responses_exploded[col_name]
                                                 .str.replace(', ', ': ', regex=False)
