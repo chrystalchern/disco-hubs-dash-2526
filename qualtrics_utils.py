@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import re
 from pathlib import Path
 import os
 import matplotlib.pyplot as plt
@@ -244,6 +245,11 @@ def single_select_pc(col,data,qtype,out_dirs,color='#004AAE'):
     fig.write_image(out_dirs['comparison']/f"{col}_pc.png")
 
 def multi_select_compare_tables(col,compare_data,labels,out_dirs,filters=None,filter_labels=None):
+    
+    # regex pattern matching labels, sorted by length descending
+    sorted_labels = sorted(labels, key=len, reverse=True)
+    label_pattern = "|".join(re.escape(label) for label in sorted_labels)
+
     for mode in ['pre','post']:
         col_name = f"{col}_{mode}"
 
@@ -255,11 +261,10 @@ def multi_select_compare_tables(col,compare_data,labels,out_dirs,filters=None,fi
 
             for fil in filters:
                 fil_name = f"{fil}_{mode}"
-                # TODO: possible bug
                 responses_exploded = col_data[[col_name, fil_name]].copy()
-                responses_exploded[col_name] = (responses_exploded[col_name]
-                                                .str.replace(', ', ': ', regex=False)
-                                                .str.split(','))
+                responses_exploded[col_name] = responses_exploded[
+                    col_name
+                ].str.findall(label_pattern)
                 responses_exploded = responses_exploded.explode(col_name)
 
                 # number of unique respondents in filtered group
@@ -291,7 +296,9 @@ def multi_select_compare_tables(col,compare_data,labels,out_dirs,filters=None,fi
                 ]
                 filtered_tables.append(filtered_responses)
             overall_n = len(col_data[col_name].dropna())
-            overall_exploded = col_data[col_name].str.split(',').explode()
+            overall_exploded = (
+                col_data[col_name].str.findall(label_pattern).explode()
+            )
             if overall_n > 0:
                 overall_counts = overall_exploded.value_counts() / overall_n
             else:
@@ -304,15 +311,17 @@ def multi_select_compare_tables(col,compare_data,labels,out_dirs,filters=None,fi
         else:
             responses = compare_data[col_name].iloc[2:].dropna()
             n_responses = len(responses)
-            exploded = responses.str.replace(', ', ': ', regex=False).str.split(',').explode()
-            responses_to_csv = (exploded.value_counts() / n_responses).reindex(labels, fill_value=0)
+            exploded = responses.str.findall(label_pattern).explode()
+            responses_to_csv = (exploded.value_counts() / n_responses).reindex(
+                labels, fill_value=0
+            )
 
         responses_to_csv = responses_to_csv.drop(index=np.nan, errors='ignore')
 
         if isinstance(responses_to_csv, pd.Series):
             responses_to_csv = responses_to_csv.reset_index()
 
-        # handle index header naming based on filter status ---
+        # handle index header naming based on filter status
         if filters is None:
             total_n = len(compare_data[col_name].iloc[2:].dropna())
             responses_to_csv.index.name = f"{compare_data[f'{col}_{mode}'][0]} (N={total_n})"
@@ -411,15 +420,20 @@ def multi_select_tables(col, data, labels, out_dir, filters=None, filter_labels=
     Pre or post-only multi-select tables with optional filtering and sample size reporting.
     Expects `data` to be the full DataFrame where rows 0 and 1 contain metadata/titles.
     """
+
+    # regex pattern matching labels, sorted by length descending
+    sorted_labels = sorted(labels, key=len, reverse=True)
+    label_pattern = "|".join(re.escape(label) for label in sorted_labels)
+
     if filters is not None:
         col_data = data[[col] + filters].iloc[2:].copy()
         filtered_tables = []
         
         for fil in filters:
             responses_exploded = col_data[[col, fil]].copy()
-            responses_exploded[col] = (responses_exploded[col]
-                                            .str.replace(', ', ': ', regex=False)
-                                            .str.split(','))
+            responses_exploded[col] = responses_exploded[col].str.findall(
+                label_pattern
+            )
             responses_exploded = responses_exploded.explode(col)
             
             # Count the total unique respondents in each filtered category group
@@ -450,7 +464,7 @@ def multi_select_tables(col, data, labels, out_dir, filters=None, filter_labels=
             
         # Calculate Overall statistics for multi-select options
         overall_n = len(col_data[col].dropna())
-        overall_exploded = col_data[col].str.split(',').explode()
+        overall_exploded = col_data[col].str.findall(label_pattern).explode()
         if overall_n > 0:
             overall_counts = overall_exploded.value_counts() / overall_n
         else:
@@ -465,23 +479,18 @@ def multi_select_tables(col, data, labels, out_dir, filters=None, filter_labels=
         responses_to_csv = responses_to_csv.reset_index()
     else:
         # Standard unfiltered multi-select branch (adjusted to read from the DataFrame)
-        responses = [r.replace(', ', ': ') for r in data[col].iloc[2:] if pd.notna(r)]
+        responses = data[col].iloc[2:].dropna()
         n_responses = len(responses)
-        
+
         if n_responses > 0:
-            responses_concat = ','.join(responses).split(',')
-            responses_concat = [r.replace(': ', ', ') for r in responses_concat]
-            responses_count = pd.Series(responses_concat).value_counts() / n_responses
+            exploded = responses.str.findall(label_pattern).explode()
+            responses_count = exploded.value_counts() / n_responses
         else:
             responses_count = pd.Series(0, index=labels)
-            
-        for label in labels:
-            if label not in responses_count:
-                responses_count[label] = 0
-                
-        responses_count = responses_count.reindex(labels)
-        responses_to_csv = responses_count.copy()
-        
+
+        # Reindexing automatically handles missing labels and sets them to 0
+        responses_to_csv = responses_count.reindex(labels, fill_value=0)
+
         responses_to_csv.index.name = f"{data[col].iloc[0]} (N={n_responses})"
         responses_to_csv = responses_to_csv.reset_index(name=col)
         
