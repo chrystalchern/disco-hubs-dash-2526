@@ -532,7 +532,7 @@ def display_comparison(table: pd.DataFrame) -> None:
                 format="%.1f%%",
                 min_value=0,
                 max_value=100,
-                color="#002676",
+                color="#D62424",
             ),
             "Percent Post": st.column_config.ProgressColumn(
                 "Post %",
