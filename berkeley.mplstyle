@@ -1,0 +1,64 @@
+# for reference, see https://github.com/matplotlib/matplotlib/blob/main/lib/matplotlib/mpl-data/stylelib/classic.mplstyle
+
+axes.spines.top : False
+axes.spines.bottom : False
+axes.spines.left : False
+axes.spines.right : False
+
+font.family : sans-serif
+font.sans-serif : Arial
+
+xtick.bottom : False
+xtick.top : False
+ytick.left : False
+ytick.right : False
+# ytick.labelleft : False
+
+# Custom palette combining primary and secondary preferred palette
+# Berkeley Blue
+# California Gold
+# Green Dark
+# Rose Dark
+# Blue Dark
+# Gold Dark
+# Purple Dark
+axes.prop_cycle : cycler('color', ['002676', 'FDB515', '00553A', '770747', '010133', 'FC9313', '431170'])
+
+# # Primary palette
+# # Berkeley Blue
+# # California Gold
+# # White
+# axes.prop_cycle : cycler('color', ['002676', 'FDB515', 'FFFFFF'])
+                                   
+# # Secondary palette, preferred
+# # Blue Dark
+# # Gold Dark
+# # Green Dark
+# # Rose Dark
+# # Purple Dark
+# axes.prop_cycle : cycler('color', ['010133', 'FC9313', '00553A', '770747', '431170'])
+
+# # Secondary palette, alternatives (medium)
+# # Blue Medium
+# # Gold Medium
+# # Green Medium
+# # Rose Medium
+# # Purple Medium
+# axes.prop_cycle : cycler('color', ['004AAE', 'FFC31B', '018943', 'E7115E', '8236C7'])
+
+# # Secondary palette, alternatives (light)
+# # Blue Light
+# # Gold Light
+# # Green Light
+# # Rose Light
+# # Purple Light
+# axes.prop_cycle : cycler('color', ['9FD1FF', 'FFE88D', 'B3E59A', 'FFCFE5', 'D9CEFF'])
+
+# # Black and grays
+# Black
+# Gray Medium
+# Gray Light
+# axes.prop_cycle : cycler('color', ['000000', '808080', 'F2F2F2'])
+
+# # Special colors
+# axes.prop_cycle : cycler('color', ['C09748'])
