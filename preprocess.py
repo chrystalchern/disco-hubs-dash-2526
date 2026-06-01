@@ -49,7 +49,7 @@ extra_cols = [
     'Duration (in seconds)',
     'Finished',
     'RecordedDate',
-    'ResponseId',
+    # 'ResponseId',
     'RecipientLastName',
     'RecipientFirstName',
     'RecipientEmail',
