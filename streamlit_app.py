@@ -10,8 +10,8 @@ import streamlit as st
 
 APP_DIR = Path(__file__).resolve().parent
 DATA_FILES = {
-    "pre": APP_DIR / "pre_only.csv",
-    "post": APP_DIR / "post_only.csv",
+    "pre": APP_DIR / "pre_only.csv", # TODO: Use pre_all.csv instead and spot check to confirm all questions are displayed
+    "post": APP_DIR / "post_only.csv", # TODO: Use post_all.csv instead and spot check to confirm all questions are displayed
     "comparison": APP_DIR / "pre_post_comparison.csv",
 }
 RAW_FILES = [
@@ -100,6 +100,7 @@ COLS = {
         "PRIOR_06_3_TEXT",
         "MOTIVATION_01_8_TEXT",
         "PLANS_02_9_TEXT",
+        # TODO: Include free response questions and confirm they show up in the Text responses Question group.
     ],
 }
 
@@ -604,6 +605,7 @@ def main() -> None:
         selections = {}
         for filter_id, col in filter_cols.items():
             options = filter_options(rows, col, filter_id)
+            # TODO: Use descriptive labels instead of the filter_id as filter names
             selections[filter_id] = st.multiselect(
                 filter_id,
                 options,

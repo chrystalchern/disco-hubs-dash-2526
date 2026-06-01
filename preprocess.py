@@ -61,7 +61,11 @@ extra_cols = [
     'LocationLongitude',
     'DistributionChannel',
     'UserLanguage',
-    'PRIOR_04', # free response
+    # TODO: Include free responses in streamlit dashboard.
+    # Remove them here but add them to included questions.
+    # (i.e., move to the "other" list the "COLS" dictionary 
+    # in streamlit_app).
+    'PRIOR_04', # free response, both pre and post.
     'PRIOR_05', # free response, post only
     'PRIOR_07', # free response, post only
     'INTEREST_02', # free response, post only
