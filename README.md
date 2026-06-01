@@ -1,7 +1,7 @@
 
 
 ```shell
-conda create -n discovery python=3.13 streamlit pandas matplotlib numpy
+conda create -n discovery python=3.13 streamlit pandas matplotlib numpy scipy plotly
 ```
 
 ```shell
