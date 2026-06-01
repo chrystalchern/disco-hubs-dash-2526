@@ -16,9 +16,13 @@ Pre-process the pre and post surveys:
    name, email, and CalNetID.
    i)   A merged dataframe of common questions in the pre and
         post (pre_post_comparison.csv)
-   ii)  A dataframe of the questions that only appear in the
+   ii)  A dataframe of all the questions that appear in the
+        pre-survey (pre_all.csv)
+   iii) A dataframe of the all questions that appear in the
+        post-survey (post_all.csv).
+   iv)  A dataframe of the questions that only appear in the
         pre-survey (pre_only.csv)
-   iii) A dataframe of the questions that only appear in the
+   v)   A dataframe of the questions that only appear in the
         post-survey (post_only.csv).
 """
 
@@ -157,7 +161,7 @@ pre_compare = results_pre.drop(pre_only_cols, axis=1).rename(columns=lambda x: x
                                                             if x in common_cols and x!=identity_col and x!='ResponseId'
                                                             else x)
 post_compare = results_post.drop(post_only_cols, axis=1).rename(columns=lambda x: x+"_post"
-                                                                if x in common_cols and x!=identity_col
+                                                                if x in common_cols and x!=identity_col and x!='ResponseId'
                                                                 else x)
 pre_post_comparison = pd.merge(pre_compare,post_compare,
                             on=identity_col, how='inner')
@@ -170,7 +174,13 @@ if verbose:
     print(F"\nTotal number of responders that responded to BOTH the pre and the post:")
     print(f"{len(pre_post_comparison)=}; 2 rows are question metadata which means N={len(pre_post_comparison)-2}")
 
-## ii) Dataframe of the questions that only appear in the pre-survey, but keep filtering columns
+## ii) Dataframe of **ALL** the questions that appear in the pre-survey
+results_pre.to_csv('pre_all.csv')
+
+## ii) Dataframe of **ALL** the questions that appear in the post-survey
+results_post.to_csv('post_all.csv')
+
+## iv) Dataframe of the questions that only appear in the pre-survey, but keep filtering columns
 common_cols_minus_filters = [c for c in common_cols if c not in ["HUB_01", "CLUSTER_SIZE", "MENTOR_08"]]
 pre_only = results_pre.drop(common_cols_minus_filters, axis=1)
 pre_only.to_csv('pre_only.csv')
@@ -178,7 +188,7 @@ if verbose:
     print(f"\nTotal number of responders in pre and post:")
     print(f"{len(pre_only)=}; 2 rows are question metadata which means N={len(pre_only)-2}")
 
-## iii) Dataframe of the questions that only appear in the post-survey, but keep filtering columns
+## v) Dataframe of the questions that only appear in the post-survey, but keep filtering columns
 post_only = results_post.drop(common_cols_minus_filters, axis=1)
 post_only.to_csv('post_only.csv')
 if verbose:
