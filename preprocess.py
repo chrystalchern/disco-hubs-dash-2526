@@ -26,8 +26,6 @@ import pandas as pd
 import numpy as np
 import textwrap
 import json
-from pathlib import Path
-import os
 
 # Verbosity: allow printing.
 # False = no printing;
@@ -44,14 +42,14 @@ results_post_raw = pd.read_csv('results_post.csv')
 ## i) Irrelevant columns
 extra_cols = [
     'StartDate',
-    # 'EndDate',
+    'EndDate',
     'Status',
     'IPAddress',
     'Progress',
     'Duration (in seconds)',
     'Finished',
     'RecordedDate',
-    # 'ResponseId',
+    'ResponseId',
     'RecipientLastName',
     'RecipientFirstName',
     'RecipientEmail',
