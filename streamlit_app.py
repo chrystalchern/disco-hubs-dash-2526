@@ -10,8 +10,8 @@ import streamlit as st
 
 APP_DIR = Path(__file__).resolve().parent
 DATA_FILES = {
-    "pre": APP_DIR / "pre_all.csv", # TODO: Use pre_all.csv instead and spot check to confirm all questions are displayed
-    "post": APP_DIR / "post_all.csv", # TODO: Use post_all.csv instead and spot check to confirm all questions are displayed
+    "pre": APP_DIR / "pre_all.csv",
+    "post": APP_DIR / "post_all.csv",
     "comparison": APP_DIR / "pre_post_comparison.csv",
 }
 RAW_FILES = [
@@ -100,7 +100,12 @@ COLS = {
         "PRIOR_06_3_TEXT",
         "MOTIVATION_01_8_TEXT",
         "PLANS_02_9_TEXT",
-        # TODO: Include free response questions and confirm they show up in the Text responses Question group.
+        'PRIOR_04', # free response, both pre and post.
+        'PRIOR_05', # free response, post only
+        'PRIOR_07', # free response, post only
+        'INTEREST_02', # free response, post only
+        'INTEREST_06', # free response, post only
+        'TESTIMONIAL',
     ],
 }
 
