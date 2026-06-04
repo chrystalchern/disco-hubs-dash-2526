@@ -61,16 +61,12 @@ extra_cols = [
     'LocationLongitude',
     'DistributionChannel',
     'UserLanguage',
-    # TODO: Include free responses in streamlit dashboard.
-    # Remove them here but add them to included questions.
-    # (i.e., move to the "other" list the "COLS" dictionary 
-    # in streamlit_app).
-    'PRIOR_04', # free response, both pre and post.
-    'PRIOR_05', # free response, post only
-    'PRIOR_07', # free response, post only
-    'INTEREST_02', # free response, post only
-    'INTEREST_06', # free response, post only
-    'TESTIMONIAL', # free response, post only
+    # 'PRIOR_04', # free response, both pre and post.
+    # 'PRIOR_05', # free response, post only
+    # 'PRIOR_07', # free response, post only
+    # 'INTEREST_02', # free response, post only
+    # 'INTEREST_06', # free response, post only
+    # 'TESTIMONIAL', # free response, post only
     'CALNETUSER',
     ]
 header_pre = results_pre_raw.drop(labels=extra_cols, axis=1, errors='ignore').iloc[:2].copy()
