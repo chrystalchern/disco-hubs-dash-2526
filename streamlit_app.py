@@ -10,8 +10,8 @@ import streamlit as st
 
 APP_DIR = Path(__file__).resolve().parent
 DATA_FILES = {
-    "pre": APP_DIR / "pre_only.csv", # TODO: Use pre_all.csv instead and spot check to confirm all questions are displayed
-    "post": APP_DIR / "post_only.csv", # TODO: Use post_all.csv instead and spot check to confirm all questions are displayed
+    "pre": APP_DIR / "pre_all.csv", # TODO: Use pre_all.csv instead and spot check to confirm all questions are displayed
+    "post": APP_DIR / "post_all.csv", # TODO: Use post_all.csv instead and spot check to confirm all questions are displayed
     "comparison": APP_DIR / "pre_post_comparison.csv",
 }
 RAW_FILES = [
