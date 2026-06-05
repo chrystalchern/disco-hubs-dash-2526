@@ -275,6 +275,12 @@ FILTER_LABELS = {
     "CLUSTER_SIZE": ["1", "2", "3", "4", "5", "6", "7", "8"],
 }
 
+DESCRIPTIVE_LABELS = {
+    "HUB_01": "Hub",
+    "MENTOR_08": "Average time spent with mentor",
+    "CLUSTER_SIZE": "Number of undergraduates in cluster"
+}
+
 DATASET_LABELS = {
     "comparison": "Pre/post comparison",
     "post": "Post survey questions",
@@ -610,9 +616,9 @@ def main() -> None:
         selections = {}
         for filter_id, col in filter_cols.items():
             options = filter_options(rows, col, filter_id)
-            # TODO: Use descriptive labels instead of the filter_id as filter names
+            label = DESCRIPTIVE_LABELS.get(filter_id, filter_id)
             selections[filter_id] = st.multiselect(
-                filter_id,
+                label,
                 options,
                 default=options,
             )
