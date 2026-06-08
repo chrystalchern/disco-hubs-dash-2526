@@ -30,6 +30,7 @@ import pandas as pd
 import numpy as np
 import textwrap
 import json
+import re
 
 # Verbosity: allow printing.
 # False = no printing;
@@ -38,8 +39,73 @@ import json
 verbose = 2
 
 # 0) Load the raw data
-results_pre_raw  = pd.read_csv('results_pre.csv')
-results_post_raw = pd.read_csv('results_post.csv')
+
+# Helper function to load, validate columns, extract dates, and stack dataframes safely
+def load_and_stack(main_file, async_file, date_col, meta_label, async_rename_dict=None):
+    main_df = pd.read_csv(main_file)
+    async_df = pd.read_csv(async_file)
+
+    # Apply one-off column corrections if provided
+    if async_rename_dict:
+        async_df.rename(columns=async_rename_dict, inplace=True)
+
+    # Check for column mismatches
+    main_cols = list(main_df.columns)
+    async_cols = list(async_df.columns)
+
+    if main_cols != async_cols:
+        print(f"\n[Column Mismatch] Found differences between '{main_file}' and '{async_file}':")
+        only_in_main = [c for c in main_cols if c not in async_cols]
+        only_in_async = [c for c in async_cols if c not in main_cols]
+
+        if only_in_main:
+            print(f"  Missing from async file (will be filled with NaN): {only_in_main}")
+        if only_in_async:
+            print(f"  Extra in async file (will be discarded): {only_in_async}")
+
+        # Reindex async dataframe to perfectly match the main dataframe's columns
+        async_df = async_df.reindex(columns=main_df.columns)
+
+    # Extract dates (YYYY_MM_DD) from filenames
+    main_date_match = re.search(r'\d{4}_\d{2}_\d{2}', main_file)
+    async_date_match = re.search(r'\d{4}_\d{2}_\d{2}', async_file)
+
+    main_date = main_date_match.group(0) if main_date_match else "Unknown"
+    async_date = async_date_match.group(0) if async_date_match else "Unknown"
+
+    # Separate metadata (first 2 rows) from actual data (row 2 onwards)
+    main_meta = main_df.iloc[:2].copy()
+    main_data = main_df.iloc[2:].copy()
+    async_data = async_df.iloc[2:].copy()  # Drop async metadata rows to avoid duplicating headers
+
+    # Add date columns to data sections
+    main_data[date_col] = main_date
+    async_data[date_col] = async_date
+
+    # Combine the data rows
+    combined_data = pd.concat([main_data, async_data], ignore_index=True)
+
+    # Configure date column for metadata rows (row 0 gets the custom label, row 1 gets NaN)
+    main_meta[date_col] = [meta_label, np.nan]
+
+    # Stack the metadata back on top of the merged data tracking
+    return pd.concat([main_meta, combined_data], ignore_index=True)
+
+
+results_pre_raw = load_and_stack(
+    'results_pre_main_2025_10_01.csv',
+    'results_pre_2026_02_28.csv',
+    'START',
+    'Earliest Discovery Hubs pre-survey date'
+)
+
+results_post_raw = load_and_stack(
+    'results_post_main_2026_05_16.csv',
+    'results_post_2025_12_13.csv',
+    'END',
+    'Latest Discovery Hubs pre-survey date',
+    async_rename_dict={'PLANS_02_7_TEXT': 'PLANS_02_9_TEXT'}
+)
 
 # 1) Discard extraneous data
 
