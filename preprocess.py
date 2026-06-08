@@ -40,7 +40,7 @@ verbose = 2
 
 # 0) Load the raw data
 
-# Helper function to load, validate columns, extract dates, and stack dataframes safely
+# Helper function to load, validate columns, extract dates, and stack dataframes
 def load_and_stack(main_file, async_file, date_col, meta_label, async_rename_dict=None):
     main_df = pd.read_csv(main_file)
     async_df = pd.read_csv(async_file)
@@ -63,7 +63,7 @@ def load_and_stack(main_file, async_file, date_col, meta_label, async_rename_dic
         if only_in_async:
             print(f"  Extra in async file (will be discarded): {only_in_async}")
 
-        # Reindex async dataframe to perfectly match the main dataframe's columns
+        # Reindex async dataframe to match the main dataframe's columns
         async_df = async_df.reindex(columns=main_df.columns)
 
     # Extract dates (YYYY_MM_DD) from filenames
@@ -85,10 +85,10 @@ def load_and_stack(main_file, async_file, date_col, meta_label, async_rename_dic
     # Combine the data rows
     combined_data = pd.concat([main_data, async_data], ignore_index=True)
 
-    # Configure date column for metadata rows (row 0 gets the custom label, row 1 gets NaN)
+    # Metadata rows (row 0 gets meta_label, row 1 gets NaN)
     main_meta[date_col] = [meta_label, np.nan]
 
-    # Stack the metadata back on top of the merged data tracking
+    # Stack the metadata back on top of the merged data
     return pd.concat([main_meta, combined_data], ignore_index=True)
 
 
