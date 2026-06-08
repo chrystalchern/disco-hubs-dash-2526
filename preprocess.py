@@ -12,6 +12,8 @@ Pre-process the pre and post surveys:
 3) Add column: CLUSTER_SIZE to both pre and post;
    Replace HUB_01 in post with official records;
    Add HUB_01 and MENTOR_08 to pre
+   TODO: Add END to pre
+   TODO: Add START to post
 4) Create the following, discarding identifying data including
    name, email, and CalNetID.
    i)   A merged dataframe of common questions in the pre and
@@ -170,6 +172,8 @@ results_post = pd.concat([header_post,results_post.copy()], ignore_index=True)
     # Replace HUB_01 in post with official records;
     # Add HUB_01 to pre;
     # Add MENTOR_08 to pre
+    # TODO: Add END to pre
+    # TODO: Add START to post
 # Cluster sizes
 cluster_sizes = pd.read_csv("cluster_sizes.csv")[['ExternalReference', 'CLUSTER_SIZE']]
 results_pre = pd.merge(results_pre, cluster_sizes, on='ExternalReference', how='left')
@@ -199,11 +203,13 @@ results_pre.rename(columns={'ACCESS_01_19_TEXT':'ACCESS_01_7_TEXT'}, inplace=Tru
 
 pre_cols = results_pre.columns
 post_cols = results_post.columns
+# TODO: add START and END as filters
+filters = ["HUB_01", "CLUSTER_SIZE", "MENTOR_08"]
 for col in pre_cols:
-    if col not in ["HUB_01", "CLUSTER_SIZE", "MENTOR_08"]:
+    if col not in filters:
         results_pre.loc[0,col] = reformat_question(results_pre.loc[0,col])
 for col in post_cols:
-    if col not in ["HUB_01", "CLUSTER_SIZE", "MENTOR_08"]:
+    if col not in filters:
         results_post.loc[0,col] = reformat_question(results_post.loc[0,col])
 
 # 4) Create de-identified dataframes
@@ -247,7 +253,7 @@ results_pre.to_csv('pre_all.csv')
 results_post.to_csv('post_all.csv')
 
 ## iv) Dataframe of the questions that only appear in the pre-survey, but keep filtering columns
-common_cols_minus_filters = [c for c in common_cols if c not in ["HUB_01", "CLUSTER_SIZE", "MENTOR_08"]]
+common_cols_minus_filters = [c for c in common_cols if c not in filters]
 pre_only = results_pre.drop(common_cols_minus_filters, axis=1)
 pre_only.to_csv('pre_only.csv')
 if verbose:

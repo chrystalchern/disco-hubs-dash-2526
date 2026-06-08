@@ -252,6 +252,8 @@ ANS_FORMAT = {
     "text": ["other"],
 }
 
+# TODO: Add START and END as filters; get date from rows
+#  instead of pre-providing labels
 FILTERS = ["HUB_01", "MENTOR_08", "CLUSTER_SIZE"]
 MISSING_FILTER_LABEL = "(Missing)"
 FILTER_LABELS = {
@@ -274,7 +276,7 @@ FILTER_LABELS = {
     ],
     "CLUSTER_SIZE": ["1", "2", "3", "4", "5", "6", "7", "8"],
 }
-
+# TODO: Add START and END
 DESCRIPTIVE_LABELS = {
     "HUB_01": "Hub",
     "MENTOR_08": "Average time spent with mentor",
