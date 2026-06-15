@@ -161,32 +161,35 @@ results_post.sort_values('notna_count', ascending=False, inplace=True, kind='mer
 results_post.drop_duplicates(subset=['ExternalReference'], keep='first', inplace=True)
 results_post.drop('notna_count', axis=1, inplace=True)
 
-if verbose >= 2:
-    print(f"\n{len(results_pre)=}")
-    print(f"{len(results_post)=}")
-
-results_pre = pd.concat([header_pre,results_pre.copy()], ignore_index=True)
-results_post = pd.concat([header_post,results_post.copy()], ignore_index=True)
-
 # 2) Add CLUSTER_SIZE to both pre and post;
     # Replace HUB_01 in post with official records;
     # Add HUB_01 to pre;
     # Add MENTOR_08 to pre
     # Add END to pre
     # Add START to post
-# Cluster sizes
+
+# Time spent with mentor
+results_pre = pd.merge(results_pre, results_post[['MENTOR_08', 'ExternalReference']], on='ExternalReference', how='left')
+# Add EndDate to pre and StartDate to post
+results_pre = pd.merge(results_pre, results_post[['END', 'ExternalReference']], on='ExternalReference', how='left')
+results_post = pd.merge(results_post, results_pre[['START', 'ExternalReference']], on='ExternalReference', how='left')
+
+# Cluster sizes (no de-duplicate because response should count towards both clusters they participated in)
 cluster_sizes = pd.read_csv("cluster_sizes.csv")[['ExternalReference', 'CLUSTER_SIZE']]
 results_pre = pd.merge(results_pre, cluster_sizes, on='ExternalReference', how='left')
 results_post = pd.merge(results_post, cluster_sizes, on='ExternalReference', how='left')
-# Official hubs
+# Official hubs (no de-duplicate because response should count towards both clusters they participated in)
 results_post = results_post.drop(columns=['HUB_01'])
 official_hubs = pd.read_csv("official_hubs.csv")[['ExternalReference', 'HUB_01']]
 results_pre = pd.merge(results_pre, official_hubs, on='ExternalReference', how='left')
 results_post = pd.merge(results_post, official_hubs, on='ExternalReference', how='left')
-results_pre = pd.merge(results_pre, results_post[['MENTOR_08', 'ExternalReference']], on='ExternalReference', how='left')
-# Add EndDate to pre and StartDate to post
-# results_pre = pd.merge(results_pre, results_post[['END', 'ExternalReference']], on='ExternalReference', how='left')
-# results_post = pd.merge(results_post, results_pre[['START', 'ExternalReference']], on='ExternalReference', how='left')
+
+# Add headers back on
+if verbose >= 2:
+    print(f"\n{len(results_pre)=}")
+    print(f"{len(results_post)=}")
+results_pre = pd.concat([header_pre,results_pre.copy()], ignore_index=True)
+results_post = pd.concat([header_post,results_post.copy()], ignore_index=True)
 
 # 3) Reformat lengthy questions
 def reformat_question(question, width=70):
