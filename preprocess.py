@@ -12,8 +12,8 @@ Pre-process the pre and post surveys:
 3) Add column: CLUSTER_SIZE to both pre and post;
    Replace HUB_01 in post with official records;
    Add HUB_01 and MENTOR_08 to pre
-   TODO: Add END to pre
-   TODO: Add START to post
+   Add END to pre
+   Add START to post
 4) Create the following, discarding identifying data including
    name, email, and CalNetID.
    i)   A merged dataframe of common questions in the pre and
