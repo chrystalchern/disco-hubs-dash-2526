@@ -252,9 +252,7 @@ ANS_FORMAT = {
     "text": ["other"],
 }
 
-# TODO: Add START and END as filters; get date from rows
-#  instead of pre-providing labels
-FILTERS = ["HUB_01", "MENTOR_08", "CLUSTER_SIZE"]
+FILTERS = ["HUB_01", "MENTOR_08", "CLUSTER_SIZE", "START", "END"]
 MISSING_FILTER_LABEL = "(Missing)"
 FILTER_LABELS = {
     "HUB_01": [
@@ -275,16 +273,15 @@ FILTER_LABELS = {
         "More than 5 hrs/week",
     ],
     "CLUSTER_SIZE": ["1", "2", "3", "4", "5", "6", "7", "8"],
-    # "START": [],
-    # "END": []
+    "START": [],
+    "END": []
 }
-# TODO: Add START and END as labels
 DESCRIPTIVE_LABELS = {
     "HUB_01": "Hub",
     "MENTOR_08": "Average time spent with mentor",
     "CLUSTER_SIZE": "Number of undergraduates in cluster",
-    # "START": "Start Date",
-    # "END": "End Date",
+    "START": "Start Date",
+    "END": "End Date",
 }
 
 DATASET_LABELS = {
