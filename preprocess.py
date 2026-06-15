@@ -205,8 +205,7 @@ results_pre.rename(columns={'ACCESS_01_19_TEXT':'ACCESS_01_7_TEXT'}, inplace=Tru
 
 pre_cols = results_pre.columns
 post_cols = results_post.columns
-# TODO: add START and END as filters
-filters = ["HUB_01", "CLUSTER_SIZE", "MENTOR_08"]
+filters = ["HUB_01", "CLUSTER_SIZE", "MENTOR_08", "START", "END"]
 for col in pre_cols:
     if col not in filters:
         results_pre.loc[0,col] = reformat_question(results_pre.loc[0,col])
