@@ -172,8 +172,8 @@ results_post = pd.concat([header_post,results_post.copy()], ignore_index=True)
     # Replace HUB_01 in post with official records;
     # Add HUB_01 to pre;
     # Add MENTOR_08 to pre
-    # TODO: Add END to pre
-    # TODO: Add START to post
+    # Add END to pre
+    # Add START to post
 # Cluster sizes
 cluster_sizes = pd.read_csv("cluster_sizes.csv")[['ExternalReference', 'CLUSTER_SIZE']]
 results_pre = pd.merge(results_pre, cluster_sizes, on='ExternalReference', how='left')
@@ -183,8 +183,10 @@ results_post = results_post.drop(columns=['HUB_01'])
 official_hubs = pd.read_csv("official_hubs.csv")[['ExternalReference', 'HUB_01']]
 results_pre = pd.merge(results_pre, official_hubs, on='ExternalReference', how='left')
 results_post = pd.merge(results_post, official_hubs, on='ExternalReference', how='left')
-
 results_pre = pd.merge(results_pre, results_post[['MENTOR_08', 'ExternalReference']], on='ExternalReference', how='left')
+# Add EndDate to pre and StartDate to post
+results_pre = pd.merge(results_pre, results_post[['END', 'ExternalReference']], on='ExternalReference', how='left')
+results_post = pd.merge(results_post, results_pre[['START', 'ExternalReference']], on='ExternalReference', how='left')
 
 # 3) Reformat lengthy questions
 def reformat_question(question, width=70):
