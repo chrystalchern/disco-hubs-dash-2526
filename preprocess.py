@@ -12,8 +12,8 @@ Pre-process the pre and post surveys:
 3) Add column: CLUSTER_SIZE to both pre and post;
    Replace HUB_01 in post with official records;
    Add HUB_01 and MENTOR_08 to pre
-   Add END to pre
-   Add START to post
+   TODO: Add END to pre
+   TODO: Add START to post
 4) Create the following, discarding identifying data including
    name, email, and CalNetID.
    i)   A merged dataframe of common questions in the pre and
@@ -185,8 +185,8 @@ results_pre = pd.merge(results_pre, official_hubs, on='ExternalReference', how='
 results_post = pd.merge(results_post, official_hubs, on='ExternalReference', how='left')
 results_pre = pd.merge(results_pre, results_post[['MENTOR_08', 'ExternalReference']], on='ExternalReference', how='left')
 # Add EndDate to pre and StartDate to post
-results_pre = pd.merge(results_pre, results_post[['END', 'ExternalReference']], on='ExternalReference', how='left')
-results_post = pd.merge(results_post, results_pre[['START', 'ExternalReference']], on='ExternalReference', how='left')
+# results_pre = pd.merge(results_pre, results_post[['END', 'ExternalReference']], on='ExternalReference', how='left')
+# results_post = pd.merge(results_post, results_pre[['START', 'ExternalReference']], on='ExternalReference', how='left')
 
 # 3) Reformat lengthy questions
 def reformat_question(question, width=70):
@@ -205,7 +205,8 @@ results_pre.rename(columns={'ACCESS_01_19_TEXT':'ACCESS_01_7_TEXT'}, inplace=Tru
 
 pre_cols = results_pre.columns
 post_cols = results_post.columns
-filters = ["HUB_01", "CLUSTER_SIZE", "MENTOR_08", "START", "END"]
+# TODO: add START and END as filters
+filters = ["HUB_01", "CLUSTER_SIZE", "MENTOR_08"]
 for col in pre_cols:
     if col not in filters:
         results_pre.loc[0,col] = reformat_question(results_pre.loc[0,col])

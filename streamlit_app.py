@@ -275,12 +275,16 @@ FILTER_LABELS = {
         "More than 5 hrs/week",
     ],
     "CLUSTER_SIZE": ["1", "2", "3", "4", "5", "6", "7", "8"],
+    # "START": [],
+    # "END": []
 }
-# TODO: Add START and END
+# TODO: Add START and END as labels
 DESCRIPTIVE_LABELS = {
     "HUB_01": "Hub",
     "MENTOR_08": "Average time spent with mentor",
-    "CLUSTER_SIZE": "Number of undergraduates in cluster"
+    "CLUSTER_SIZE": "Number of undergraduates in cluster",
+    # "START": "Start Date",
+    # "END": "End Date",
 }
 
 DATASET_LABELS = {
