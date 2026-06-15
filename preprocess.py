@@ -12,8 +12,8 @@ Pre-process the pre and post surveys:
 3) Add column: CLUSTER_SIZE to both pre and post;
    Replace HUB_01 in post with official records;
    Add HUB_01 and MENTOR_08 to pre
-   TODO: Add END to pre
-   TODO: Add START to post
+   Add END to pre
+   Add START to post
 4) Create the following, discarding identifying data including
    name, email, and CalNetID.
    i)   A merged dataframe of common questions in the pre and
@@ -208,8 +208,7 @@ results_pre.rename(columns={'ACCESS_01_19_TEXT':'ACCESS_01_7_TEXT'}, inplace=Tru
 
 pre_cols = results_pre.columns
 post_cols = results_post.columns
-# TODO: add START and END as filters
-filters = ["HUB_01", "CLUSTER_SIZE", "MENTOR_08"]
+filters = ["HUB_01", "CLUSTER_SIZE", "MENTOR_08", "START", "END"]
 for col in pre_cols:
     if col not in filters:
         results_pre.loc[0,col] = reformat_question(results_pre.loc[0,col])
