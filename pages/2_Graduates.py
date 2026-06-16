@@ -1,6 +1,6 @@
 import streamlit as st
-import streamlit_app
+import dashboard_engine
 import grad_config
 
 st.set_page_config(page_title=grad_config.PAGE_TITLE, layout="wide")
-streamlit_app.render_dashboard(grad_config)
+dashboard_engine.render_dashboard(grad_config)

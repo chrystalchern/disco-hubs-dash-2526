@@ -11,7 +11,7 @@ python -m streamlit run Home.py
 ```
 disco-hubs-dash-2526/
 │
-├── survey_engine.py         # Shared processing and UI rendering logic
+├── dashboard_engine.py         # Shared processing and UI rendering logic
 ├── ug_config.py             # Undergraduate configurations
 ├── grad_config.py           # Graduate configurations
 │
