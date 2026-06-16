@@ -96,14 +96,14 @@ def load_and_stack(main_file, async_file, date_col, meta_label, async_rename_dic
 # TODO: Wrap all the remaining code in a function, preprocess(pp_dictionary)
 
 results_pre_raw = load_and_stack(
-    'results_pre_main_2025_10_01.csv', # TODO: use pp_dictionary(pre_data_file)
+    'results_pre_main_2025_10_01.csv', # TODO: use pp_dictionary.get(pre_data_file)
     'results_pre_2026_02_28.csv',
     'START',
     'Earliest Discovery Hubs pre-survey date'
 )
 
 results_post_raw = load_and_stack(
-    'results_post_main_2026_05_16.csv', # TODO: use pp_dictionary(post_data_file)
+    'results_post_main_2026_05_16.csv', # TODO: use pp_dictionary.get(post_data_file)
     'results_post_2025_12_13.csv',
     'END',
     'Latest Discovery Hubs pre-survey date',
