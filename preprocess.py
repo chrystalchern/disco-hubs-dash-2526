@@ -186,7 +186,7 @@ results_pre = pd.merge(results_pre, official_hubs, on='ExternalReference', how='
 results_post = pd.merge(results_post, official_hubs, on='ExternalReference', how='left')
 
 # TODO: Compute time in program
-# Add column to results_pre and results_post called "TIME_IN_PROGRAM"
+# Add column to results_pre, results_post, header_pre, and header_post called "TIME_IN_PROGRAM"
 # Fill in column with helper function, compute_time_in_program(start, end)
 def compute_time_in_program(start, end):
     """Return number of semester student has
