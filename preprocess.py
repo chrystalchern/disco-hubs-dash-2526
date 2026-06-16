@@ -93,16 +93,17 @@ def load_and_stack(main_file, async_file, date_col, meta_label, async_rename_dic
     # Stack the metadata back on top of the merged data
     return pd.concat([main_meta, combined_data], ignore_index=True)
 
+# TODO: Wrap all the remaining code in a function, preprocess(pp_dictionary)
 
 results_pre_raw = load_and_stack(
-    'results_pre_main_2025_10_01.csv',
+    'results_pre_main_2025_10_01.csv', # TODO: use pp_dictionary(pre_data_file)
     'results_pre_2026_02_28.csv',
     'START',
     'Earliest Discovery Hubs pre-survey date'
 )
 
 results_post_raw = load_and_stack(
-    'results_post_main_2026_05_16.csv',
+    'results_post_main_2026_05_16.csv', # TODO: use pp_dictionary(post_data_file)
     'results_post_2025_12_13.csv',
     'END',
     'Latest Discovery Hubs pre-survey date',
@@ -184,6 +185,22 @@ official_hubs = pd.read_csv("official_hubs.csv")[['ExternalReference', 'HUB_01']
 results_pre = pd.merge(results_pre, official_hubs, on='ExternalReference', how='left')
 results_post = pd.merge(results_post, official_hubs, on='ExternalReference', how='left')
 
+# TODO: Compute time in program
+# Add column to results_pre and results_post called "TIME_IN_PROGRAM"
+# Fill in column with helper function, compute_time_in_program(start, end)
+def compute_time_in_program(start, end):
+    """Return number of semester student has
+    participated in the Discovery Hubs"""
+    if start == "..." and end == "...":
+        return 1
+    elif start == "..." and end == "...":
+        return 1
+    elif start == "..." and end == "...":
+        return 2
+# TODO: Find correct pandas syntax to use compute_time_in_program to fill in the "TIME_IN_PROGRAM" column
+# results_pre["TIME_IN_PROGRAM"].apply(compute_time_in_program(results_pre["START"],results_pre["END"]))
+# results_post["TIME_IN_PROGRAM"].apply(compute_time_in_program(results_pre["START"],results_pre["END"]))
+
 # Add headers back on
 if verbose >= 2:
     print(f"\n{len(results_pre)=}")
@@ -208,6 +225,8 @@ results_pre.rename(columns={'ACCESS_01_19_TEXT':'ACCESS_01_7_TEXT'}, inplace=Tru
 
 pre_cols = results_pre.columns
 post_cols = results_post.columns
+# TODO: add "TIME_IN_PROGRAM" as a filter
+# TODO: add "PRIOR_01" as a filter
 filters = ["HUB_01", "CLUSTER_SIZE", "MENTOR_08", "START", "END"]
 for col in pre_cols:
     if col not in filters:
@@ -269,3 +288,10 @@ post_only = results_post.drop(common_cols_minus_filters, axis=1)
 post_only.to_csv('post_only.csv')
 if verbose:
     print(f"{len(post_only)=}; 2 rows are question metadata which means N={len(post_only)-2}")
+
+if __name__ == "__main__":
+    from ug_config import PREPROCESS as ug_pp_dictionary
+    from grad_config import PREPROCESS as grad_pp_dictionary
+    # TODO: uncomment to run preprocessing, once the "preprocess" function is created
+    # preprocess(ug_pp_dictionary)
+    # preprocess(grad_pp_dictionary)

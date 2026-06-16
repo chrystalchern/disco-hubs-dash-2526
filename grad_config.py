@@ -1,5 +1,9 @@
 from pathlib import Path
 APP_DIR = Path(__file__).resolve().parent
+PREPROCESS = {
+    "pre_data_file": APP_DIR / "....csv", # TODO: use the correct filepath (for now, copy the UG data, rename with "grad" in front)
+    "post_data_file": APP_DIR / "....csv", # TODO: use the correct filepath (for now, copy the UG data, rename with "grad" in front)
+}
 DATA_FILES = {
     "pre": APP_DIR / "pre_all.csv",
     "post": APP_DIR / "post_all.csv",
