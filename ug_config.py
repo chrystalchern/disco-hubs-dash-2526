@@ -2,9 +2,9 @@ from pathlib import Path
 APP_DIR = Path(__file__).resolve().parent
 PREPROCESS = {
     "pre_main_data_file": APP_DIR / "ug_results_pre_main_2025_10_01.csv",
-    "pre_extra_data_file": APP_DIR / "ug_results_pre_2026_02_28.csv",
+    "pre_async_data_file": APP_DIR / "ug_results_pre_2026_02_28.csv",
     "post_main_data_file": APP_DIR / "ug_results_post_main_2026_05_16.csv",
-    "post_extra_data_file": APP_DIR / "ug_results_post_2025_12_13.csv",
+    "post_async_data_file": APP_DIR / "ug_results_post_2025_12_13.csv",
 }
 DATA_FILES = {
     "pre": APP_DIR / "pre_all.csv",

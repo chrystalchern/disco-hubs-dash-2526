@@ -94,21 +94,36 @@ def load_and_stack(main_file, async_file, date_col, meta_label, async_rename_dic
     return pd.concat([main_meta, combined_data], ignore_index=True)
 
 # TODO: Wrap all the remaining code in a function, preprocess(pp_dictionary)
+def preprocess(pp_dictionary):
+    pre_file = load_and_stack(pp_dictionary.get('pre_main_data_file'),
+                                     pp_dictionary.get('pre_async_data_file'),
+                                     'START',
+                                     'Earliest Discovery Hubs pre-survey date'
+    )
 
-results_pre_raw = load_and_stack(
-    'ug_results_pre_main_2025_10_01.csv', # TODO: use pp_dictionary.get(pre_data_file)
-    'ug_results_pre_2026_02_28.csv',
-    'START',
-    'Earliest Discovery Hubs pre-survey date'
-)
+    post_file = load_and_stack(pp_dictionary.get('post_main_data_file'),
+                                      pp_dictionary.get('post_async_data_file'),
+                                      'END',
+                                      'Latest Discovery Hubs pre-survey date',
+                                      async_rename_dict={'PLANS_02_7_TEXT': 'PLANS_02_9_TEXT'}
+    )
+    return pre_file, post_file
 
-results_post_raw = load_and_stack(
-    'ug_results_post_main_2026_05_16.csv', # TODO: use pp_dictionary.get(post_data_file)
-    'ug_results_post_2025_12_13.csv',
-    'END',
-    'Latest Discovery Hubs pre-survey date',
-    async_rename_dict={'PLANS_02_7_TEXT': 'PLANS_02_9_TEXT'}
-)
+results_pre_raw, results_post_raw = preprocess(PREPROCESS)
+# results_pre_raw = load_and_stack(
+#     'ug_results_pre_main_2025_10_01.csv', # TODO: use pp_dictionary.get(pre_data_file)
+#     'ug_results_pre_2026_02_28.csv',
+#     'START',
+#     'Earliest Discovery Hubs pre-survey date'
+# )
+#
+# results_post_raw = load_and_stack(
+#     'ug_results_post_main_2026_05_16.csv', # TODO: use pp_dictionary.get(post_data_file)
+#     'ug_results_post_2025_12_13.csv',
+#     'END',
+#     'Latest Discovery Hubs pre-survey date',
+#     async_rename_dict={'PLANS_02_7_TEXT': 'PLANS_02_9_TEXT'}
+# )
 
 # 1) Discard extraneous data
 
