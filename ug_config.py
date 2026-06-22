@@ -2,7 +2,9 @@ from pathlib import Path
 APP_DIR = Path(__file__).resolve().parent
 PREPROCESS = {
     "pre_data_file": APP_DIR / "....csv", # TODO: use the correct filepath (rename with "UG" in front)
+    "pre_main_data_file": APP_DIR / "....csv",  # TODO
     "post_data_file": APP_DIR / "....csv", # TODO: use the correct filepath (rename with "UG" in front)
+    "post_main_data_file": APP_DIR / "....csv",  # TODO
 }
 DATA_FILES = {
     "pre": APP_DIR / "pre_all.csv",
