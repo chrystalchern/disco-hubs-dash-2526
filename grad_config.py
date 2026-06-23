@@ -247,7 +247,7 @@ ANS_FORMAT = {
     "text": ["other"],
 }
 
-FILTERS = ["HUB_01", "MENTOR_08", "CLUSTER_SIZE", "START", "END"]
+FILTERS = ["HUB_01", "CLUSTER_SIZE", "START", "END"]
 MISSING_FILTER_LABEL = "(Missing)"
 FILTER_LABELS = {
     "HUB_01": [
@@ -260,20 +260,12 @@ FILTER_LABELS = {
         "CNMAT",
         "KALX",
     ],
-    "MENTOR_08": [
-        "None",
-        "More than zero, but less than one hour per week",
-        "1-2 hrs/wk",
-        "3-4 hrs/week",
-        "More than 5 hrs/week",
-    ],
     "CLUSTER_SIZE": ["1", "2", "3", "4", "5", "6", "7", "8"],
     "START": [],
     "END": []
 }
 DESCRIPTIVE_LABELS = {
     "HUB_01": "Hub",
-    "MENTOR_08": "Average time spent with mentor",
     "CLUSTER_SIZE": "Number of undergraduates in cluster",
     "START": "Start Date",
     "END": "End Date",
