@@ -163,7 +163,8 @@ def display_distribution(table: pd.DataFrame) -> None:
     st.bar_chart(chart_data, height=320)
     st.dataframe(
         table,
-        use_container_width=True,
+        # use_container_width=True,
+        width = 'stretch',
         hide_index=True,
         column_config={
             "Percent": st.column_config.ProgressColumn(
@@ -215,7 +216,8 @@ def display_comparison(table: pd.DataFrame) -> None:
 
     st.dataframe(
         table,
-        use_container_width=True,
+        # use_container_width=True,
+        width = 'stretch',
         hide_index=True,
         column_config={
             "Percent Pre": st.column_config.ProgressColumn(
@@ -338,13 +340,14 @@ def render_dashboard(cfg):
     if dataset_key == "comparison" and kind == "text":
         tabs = st.tabs(["Pre", "Post", "Filtered rows"])
         with tabs[0]:
-            st.dataframe(text_responses(filtered_rows, f"{question_id}_pre"), use_container_width=True)
+            st.dataframe(text_responses(filtered_rows, f"{question_id}_pre"), width='stretch')
         with tabs[1]:
-            st.dataframe(text_responses(filtered_rows, f"{question_id}_post"), use_container_width=True)
+            st.dataframe(text_responses(filtered_rows, f"{question_id}_post"), width='stretch')
         with tabs[2]:
             st.dataframe(
                 filtered_question_rows(filtered_rows, dataset_key, question_id, filter_cols, cfg.FILTERS),
-                use_container_width=True,
+                # use_container_width=True,
+                width='stretch',
                 hide_index=True,
             )
         return
@@ -363,14 +366,15 @@ def render_dashboard(cfg):
         with tabs[1]:
             st.dataframe(
                 filtered_question_rows(filtered_rows, dataset_key, question_id, filter_cols, cfg.FILTERS),
-                use_container_width=True,
+                # use_container_width=True,
+                width='stretch',
                 hide_index=True,
             )
         return
 
     if kind == "text":
         table = text_responses(filtered_rows, question_id)
-        st.dataframe(table, use_container_width=True, hide_index=True)
+        st.dataframe(table, width='stretch', hide_index=True)
         st.download_button(
             "Download responses CSV",
             table.to_csv(index=False).encode("utf-8"),
@@ -396,6 +400,7 @@ def render_dashboard(cfg):
     with tabs[1]:
         st.dataframe(
             filtered_question_rows(filtered_rows, dataset_key, question_id, filter_cols, cfg.FILTERS),
-            use_container_width=True,
+            # use_container_width=True,
+            width = 'stretch',
             hide_index=True,
         )
