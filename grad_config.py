@@ -5,9 +5,9 @@ PREPROCESS = {
     "post_main_data_file": APP_DIR / "grad_results_post_main_2026_05_16.csv",
 }
 DATA_FILES = {
-    "pre": APP_DIR / "pre_all.csv",
-    "post": APP_DIR / "post_all.csv",
-    "comparison": APP_DIR / "pre_post_comparison.csv",
+    "pre": APP_DIR / "grad_pre_all.csv",
+    "post": APP_DIR / "grad_post_all.csv",
+    "comparison": APP_DIR / "grad_pre_post_comparison.csv",
 }
 RAW_FILES = [
     APP_DIR / "results_pre.csv",

@@ -7,9 +7,9 @@ PREPROCESS = {
     "post_async_data_file": APP_DIR / "ug_results_post_2025_12_13.csv",
 }
 DATA_FILES = {
-    "pre": APP_DIR / "pre_all.csv",
-    "post": APP_DIR / "post_all.csv",
-    "comparison": APP_DIR / "pre_post_comparison.csv",
+    "pre": APP_DIR / "ug_pre_all.csv",
+    "post": APP_DIR / "ug_post_all.csv",
+    "comparison": APP_DIR / "ug_pre_post_comparison.csv",
 }
 RAW_FILES = [
     APP_DIR / "results_pre.csv",

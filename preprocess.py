@@ -307,7 +307,7 @@ def preprocess(pp_dictionary, type):
     pre_post_comparison = pd.merge(pre_compare,post_compare,
                                 on=identity_col, how='inner')
     pre_post_comparison.drop(identity_col, axis=1, inplace=True)
-    pre_post_comparison.to_csv('pre_post_comparison.csv')
+    pre_post_comparison.to_csv(type + '_pre_post_comparison.csv')
     if verbose:
         print(f"\nTotal number of responders in pre and post:")
         print(f"{len(pre_compare)=}; 2 rows are question metadata which means N={len(pre_compare)-2}")
@@ -316,22 +316,22 @@ def preprocess(pp_dictionary, type):
         print(f"{len(pre_post_comparison)=}; 2 rows are question metadata which means N={len(pre_post_comparison)-2}")
 
     ## ii) Dataframe of **ALL** the questions that appear in the pre-survey
-    results_pre.to_csv('pre_all.csv')
+    results_pre.to_csv(type + '_pre_all.csv')
 
     ## ii) Dataframe of **ALL** the questions that appear in the post-survey
-    results_post.to_csv('post_all.csv')
+    results_post.to_csv(type + '_post_all.csv')
 
     ## iv) Dataframe of the questions that only appear in the pre-survey, but keep filtering columns
     common_cols_minus_filters = [c for c in common_cols if c not in filters]
     pre_only = results_pre.drop(common_cols_minus_filters, axis=1)
-    pre_only.to_csv('pre_only.csv')
+    pre_only.to_csv(type + '_pre_only.csv')
     if verbose:
         print(f"\nTotal number of responders in pre and post:")
         print(f"{len(pre_only)=}; 2 rows are question metadata which means N={len(pre_only)-2}")
 
     ## v) Dataframe of the questions that only appear in the post-survey, but keep filtering columns
     post_only = results_post.drop(common_cols_minus_filters, axis=1)
-    post_only.to_csv('post_only.csv')
+    post_only.to_csv(type + '_post_only.csv')
     if verbose:
         print(f"{len(post_only)=}; 2 rows are question metadata which means N={len(post_only)-2}")
 
