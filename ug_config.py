@@ -5,6 +5,8 @@ PREPROCESS = {
     "pre_async_data_file": APP_DIR / "ug_results_pre_2026_02_28.csv",
     "post_main_data_file": APP_DIR / "ug_results_post_main_2026_05_16.csv",
     "post_async_data_file": APP_DIR / "ug_results_post_2025_12_13.csv",
+    "hub_file": APP_DIR / "ug_official_hubs.csv",
+    "cluster_size_file": APP_DIR / "ug_cluster_sizes.csv",
 }
 DATA_FILES = {
     "pre": APP_DIR / "ug_pre_all.csv",
@@ -12,10 +14,10 @@ DATA_FILES = {
     "comparison": APP_DIR / "ug_pre_post_comparison.csv",
 }
 RAW_FILES = [
-    APP_DIR / "results_pre.csv",
-    APP_DIR / "results_post.csv",
-    APP_DIR / "cluster_sizes.csv",
-    APP_DIR / "official_hubs.csv",
+    APP_DIR / "ug_results_pre_main_2025_10_01.csv",
+    APP_DIR / "ug_results_post_main_2026_05_16.csv",
+    APP_DIR / "ug_official_hubs.csv",
+    APP_DIR / "ug_cluster_sizes.csv",
 ]
 
 COLS = {

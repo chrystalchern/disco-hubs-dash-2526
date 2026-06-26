@@ -3,6 +3,8 @@ APP_DIR = Path(__file__).resolve().parent
 PREPROCESS = {
     "pre_main_data_file": APP_DIR / "grad_results_pre_main_2025_10_01.csv",
     "post_main_data_file": APP_DIR / "grad_results_post_main_2026_05_16.csv",
+    "hub_file": APP_DIR / "grad_official_hubs_cluster_sizes.csv",
+    "cluster_size_file": APP_DIR / "grad_official_hubs_cluster_sizes.csv",
 }
 DATA_FILES = {
     "pre": APP_DIR / "grad_pre_all.csv",
@@ -10,241 +12,118 @@ DATA_FILES = {
     "comparison": APP_DIR / "grad_pre_post_comparison.csv",
 }
 RAW_FILES = [
-    APP_DIR / "results_pre.csv",
-    APP_DIR / "results_post.csv",
-    APP_DIR / "cluster_sizes.csv",
-    APP_DIR / "official_hubs.csv",
+    APP_DIR / "grad_results_pre_main_2025_10_01.csv",
+    APP_DIR / "grad_results_post_main_2026_05_16.csv",
+    APP_DIR / "grad_official_hubs_cluster_sizes.csv",
 ]
 
 COLS = {
-    "agree": [
-        "BELONG_01",
-        "BELONG_02",
-        "MENTOR_02",
-        "MENTOR_03",
-        "MENTOR_06_1",
-        "MENTOR_06_2",
-        "MENTOR_06_3",
-        "MENTOR_06_4",
-        "MENTOR_06_5",
-        "MENTOR_06_6",
-        "MENTOR_07_1",
-        "MENTOR_07_2",
-        "MENTOR_07_3",
-        "MENTOR_07_4",
-        "MENTOR_07_5",
+    "prior_semesters" : [
+        'PRIOR',
+    ],
+    "prior_weekly" : [
+        'TIME',
+    ],
+    "agree" : [
+        'REWARD_01',
+        'REWARD_02',
+        'SUPPORT_01',
+        'SUPPORT_02',
+        'SUPPORT_03',
+        'SUPPORT_04',
     ],
     "proficiency": [
-        "PROFICIENCY_01",
-        "PROFICIENCY_02",
-        "PROFICIENCY_03",
-        "PROFICIENCY_04",
-        "PROFICIENCY_05",
+        'PROFICIENCY_PROJ_01',
+        'PROFICIENCY_PROJ_02',
+        'PROFICIENCY_PROJ_03',
+        'PROFICIENCY_PROJ_04',
+        'PROFICIENCY_COMM_01',
+        'PROFICIENCY_COMM_02',
+        'PROFICIENCY_COMM_03',
+        'PROFICIENCY_COMM_04',
+        'PROFICIENCY_COMM_05',
     ],
-    "yesno": [
-        "PRIOR_01",
-        "MENTOR_01",
-    ],
-    "prior": [
-        "PRIOR_02",
-    ],
-    "prior_considered": [
-        "PRIOR_06",
-    ],
-    "num_emails": [
-        "PRIOR_03",
-    ],
-    "why": [
-        "MOTIVATION_01",
-    ],
-    "mentor_04": [
-        "MENTOR_04",
-    ],
-    "mentor_05": [
-        "MENTOR_05",
-    ],
-    "barriers": [
-        "ACCESS_01",
-    ],
-    "comms": [
-        "ACCESS_02",
-    ],
-    "plans_01": [
-        "PLANS_01",
-    ],
-    "plans_02": [
-        "PLANS_02",
-    ],
-    "plans_03": [
-        "PLANS_03",
-    ],
-    "interest_01": [
-        "INTEREST_01",
-    ],
-    "length": [
-        "INTEREST_03",
-    ],
-    "timing": [
-        "INTEREST_04",
-        "INTEREST_05",
-    ],
-    "other": [
-        "ACCESS_01_7_TEXT",
-        "PRIOR_02_17_TEXT",
-        "ACCESS_02_10_TEXT",
-        "PRIOR_06_3_TEXT",
-        "MOTIVATION_01_8_TEXT",
-        "PLANS_02_9_TEXT",
-        'PRIOR_04', # free response, both pre and post.
-        'PRIOR_05', # free response, post only
-        'PRIOR_07', # free response, post only
-        'INTEREST_02', # free response, post only
-        'INTEREST_06', # free response, post only
-        'TESTIMONIAL',
-    ],
+    # "slider": [
+    #     "MENTOR_FORMAT_1_1" # post only
+    # ],
+    # "yesno": [
+    #     "INTEREST_1" # post only
+    # ],
+    # "rank_aspects": [
+    #     "INTEREST_2_1",  # post only
+    #     "INTEREST_2_4",  # post only
+    #     "INTEREST_2_5",  # post only
+    #     "INTEREST_2_6",  # post only
+    #     "INTEREST_2_9",  # post only
+    #     "INTEREST_2_10", # post only
+    #     "INTEREST_2_11", # post only
+    # ],
+    # "length": [
+    #     "INTEREST_3" # post only
+    # ],
+    # "rank_format": [
+    #     "INTEREST_4_1", # post only
+    #     "INTEREST_4_2", # post only
+    #     "INTEREST_4_3", # post only
+    #     "INTEREST_4_4", # post only
+    # ],
+    # "topics": [
+    #     "INTEREST_5" # post only
+    # ],
+    # "other": [
+    #     "INTEREST_5_2_TEXT" # post only
+    # ]
 }
+
 
 LABELS = {
-    "agree": [
-        "Strongly Agree",
-        "Agree",
-        "Somewhat Agree",
-        "Somewhat Disagree",
-        "Disagree",
-        "Strongly Disagree",
-    ],
-    "proficiency": [
-        "Excellent",
-        "Very Good",
-        "Good",
-        "Fair",
-        "Poor",
-        "Very Poor",
-    ],
-    "yesno": ["Yes", "No"],
-    "prior": [
-        "Participated in this program in a previous academic term",
-        "Reached out directly to a professor",
-        "Friend or acquaintance connected me to a research group",
-        "Seminar or conference",
-        "Another program on campus (URAP, SURF, Rose Hills, Haas Scholars, UCDC)",
-        "Other",
-    ],
-    "prior_considered": [
-        "Reaching out directly to a professor",
-        "Another program on campus (URAP, SURF, Rose Hills, Haas Scholars)",
-        "Other",
-    ],
-    "num_emails": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
-    "why": [
-        "To make my undergraduate experience complete",
-        "To engage in more active learning compared to the traditional classroom experience (e.g., reading textbooks with no application)",
-        "To shape knowledge, not just consume it",
-        "To gain hands-on skills",
-        "To explore career interests",
-        "To build mentorship connections",
-        "To prepare for graduate school",
-        "Other",
-        "I do not feel research is necessary (exclusive choice)",
-    ],
-    "mentor_04": [
-        "My mentor is generally available to meet or talk when I need them.",
-        "My mentor is an active listener.",
-        "My mentor takes a sincere interest in my career.",
-        "My mentor acknowledges my contributions appropriately.",
-        "My mentor is supportive of work-life balance.",
-        "My mentor motivates me to improve my work.",
-    ],
-    "mentor_05": [
-        "My mentor demonstrates professional expertise.",
-        "My mentor is helpful in providing direction and guidance on professional issues.",
-        "My mentor helps me to formulate clear goals.",
-        "My mentor facilitates building my professional network.",
-        "My mentor provides thoughtful advice on my scholarly work.",
-    ],
-    "barriers": [
-        "My academic workload and responsibilities",
-        "My job responsibilties and work hours",
-        "My family responsibilities/commitments",
-        "Financial concerns (e.g., related expenses, need for paid work left no time for something that feels 'extra')",
-        "I did not have the skills I felt I needed to build before I could engage in research",
-        "Lack of interest",
-        "Too few or no positions available in my major",
-        "Too few or no positions available for students in my year",
-        "I applied, but did not secure a position",
-        "I didn't know where to look",
-        "I didn't know how to approach or reach out to a lab or researcher to join their project",
-        "Transportation to/from research site (cost or time)",
-        "Other",
-    ],
-    "comms": [
-        "A class at Berkeley",
-        "A friend or acquaintance",
-        "A campus event/seminar or conference",
-        "A department email",
-        "The Discovery Opportunities Database",
-        "Golden Bear Orientation",
-        "Other",
-    ],
-    "plans_01": [
-        "Yes, in the same group.",
-        "Yes, in a different group.",
-        "No.",
-    ],
-    "plans_02": [
-        "Non-academic / industry research.",
-        "Artistic / creative endeavors.",
-        "Business / consulting.",
-        "Professional practice.",
-        "Teaching / education.",
-        "Government / nonprofit.",
-        "Other",
-        "None of the above",
-    ],
-    "plans_03": [
-        "Position secured or offer accepted",
-        "Actively appREDACTEDg",
-        "Strongly considering",
-        "Generally considering",
-        "Exploring options",
-    ],
-    "interest_01": [
-        "Yes",
-        "No",
-        "I would be interested, but I am not eligible due to graduating this semester",
-    ],
-    "length": [
-        "Semester long",
-        "Year long",
-        "Year with possibility of extending into summer",
-        "Spring with possibility of extending into summer",
-    ],
-    "timing": ["March", "April", "May", "June", "July", "August"],
+    "prior_semesters"  : ["3+ semesters", "1-2 semesters", "<1 semester", "None"],
+    "prior_weekly" : ["12+ hrs/wk", "8-12 hrs/wk", "4-8 hrs/wk", "0-4 hrs/wk", "None"],
+    "agree" : ["Strongly Agree", "Agree", "Somewhat Agree", "Somewhat Disagree", "Disagree", "Strongly Disagree"],
+    "proficiency" : ["Excellent", "Very Good", "Good", "Fair", "Poor", "Very Poor"],
+    # "slider": None, # 0=within hub; 100=PI's lab
+    # "yesno" : ["Yes", "No"],
+    # "rank_aspects": [ # ranking
+    #             "The opportunity to mentor",
+    #             "Leadership workshops",
+    #             "Stipend",
+    #             "Undergraduate assistance to move your research forward",
+    #             "The opportunity to look into a new research topic",
+    #             "Funding for supplies and equipment",
+    #             "Research Symposium"
+    #                  ],
+    # "length": [ # multiselect
+    #             "Year with possibility of extending into summer",
+    #             "Year long",
+    #             "Spring with possibility of extending into summer",
+    #             "Semester long",
+    #           ],
+    # "rank_format": [ # ranking
+    #             "Lecture/Lesson",
+    #             "Interactive workshop",
+    #             "Panel/Q&A",
+    #             "Guided discussion with peers"
+    #                 ],
+    # "topics": [ # multiselect
+    #             "Research Design & Grant Writing",
+    #             "Project & Budget Management",
+    #             "Leadership & Team Management",
+    #             "Mentorship & Teaching Skills",
+    #             "Community-Centered Leadership",
+    #             "Communication & Presentation",
+    #             "Networking & Professional Growth"
+    #           ],
+    # "other": None # text
 }
 
+
 ANS_FORMAT = {
-    "single_select": [
-        "agree",
-        "proficiency",
-        "yesno",
-        "num_emails",
-        "plans_01",
-        "plans_03",
-        "interest_01",
-        "length",
-        "timing",
-    ],
-    "multi_select": [
-        "prior",
-        "prior_considered",
-        "why",
-        "mentor_04",
-        "mentor_05",
-        "barriers",
-        "comms",
-        "plans_02",
-    ],
-    "text": ["other"],
+    # "single_select": ["prior_semesters","prior_weekly","agree","proficiency","yesno"],
+    "single_select": ["prior_semesters","prior_weekly","agree","proficiency"],
+    # "multi_select": ["length","topics"],
+    # "slider": ["slider"],
+    # "ranking": ["rank_aspects","rank_format"],
+    # "text": ["other"]
 }
 
 FILTERS = ["HUB_01", "CLUSTER_SIZE", "START", "END"]

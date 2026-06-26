@@ -253,7 +253,7 @@ def filtered_question_rows(
     out = out.rename(columns={filter_cols.get(filter_id, ""): filter_id for filter_id in filters_list})
     return out
 
-# ----- REPLACES main() -----
+
 def render_dashboard(cfg):
     st.title(cfg.PAGE_TITLE)
 

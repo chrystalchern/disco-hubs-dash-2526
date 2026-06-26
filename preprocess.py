@@ -50,7 +50,6 @@ extra_cols = [
     'Duration (in seconds)',
     'Finished',
     'RecordedDate',
-    # 'ResponseId',
     'RecipientLastName',
     'RecipientFirstName',
     'RecipientEmail',
@@ -58,12 +57,6 @@ extra_cols = [
     'LocationLongitude',
     'DistributionChannel',
     'UserLanguage',
-    # 'PRIOR_04', # free response, both pre and post.
-    # 'PRIOR_05', # free response, post only
-    # 'PRIOR_07', # free response, post only
-    # 'INTEREST_02', # free response, post only
-    # 'INTEREST_06', # free response, post only
-    # 'TESTIMONIAL', # free response, post only
     'CALNETUSER',
     ]
 
@@ -120,15 +113,11 @@ def load_and_stack(main_file, async_file, date_col, meta_label, async_rename_dic
     # Stack the metadata back on top of the merged data
     return pd.concat([main_meta, combined_data], ignore_index=True)
 
-def load_and_stack_no_async(main_file, date_col, meta_label, async_rename_dict=None):
+def load_and_stack_no_async(main_file, date_col, meta_label):
     main_df = pd.read_csv(main_file)
-
-    # Check for column mismatches
-    main_cols = list(main_df.columns)
 
     # Extract dates (YYYY_MM_DD) from filenames
     main_date_match = re.search(r'\d{4}_\d{2}_\d{2}', main_file.name)
-
     main_date = main_date_match.group(0) if main_date_match else "Unknown"
 
     # Separate metadata (first 2 rows) from actual data (row 2 onwards)
@@ -207,7 +196,6 @@ def preprocess(pp_dictionary, type):
         # Add START to post
         # Add MENTOR_08 to pre
     # For Grad data:
-        # Replace HUB_01 in post with official records;
         # Add HUB_01 to pre and post
         # Add CLUSTER_SIZE to pre and post
         # Add END to pre
@@ -224,12 +212,13 @@ def preprocess(pp_dictionary, type):
                             how='left')
 
     # Cluster sizes (no de-duplicate because response should count towards both clusters they participated in)
-    cluster_sizes = pd.read_csv("cluster_sizes.csv")[['ExternalReference', 'CLUSTER_SIZE']]
+    cluster_sizes = pd.read_csv(pp_dictionary.get("cluster_size_file"))[['ExternalReference', 'CLUSTER_SIZE']]
     results_pre = pd.merge(results_pre, cluster_sizes, on='ExternalReference', how='left')
     results_post = pd.merge(results_post, cluster_sizes, on='ExternalReference', how='left')
     # Official hubs (no de-duplicate because response should count towards both clusters they participated in)
-    results_post = results_post.drop(columns=['HUB_01'])
-    official_hubs = pd.read_csv("official_hubs.csv")[['ExternalReference', 'HUB_01']]
+    if 'HUB_01' in results_post.columns:
+        results_post = results_post.drop(columns=['HUB_01'])
+    official_hubs = pd.read_csv(pp_dictionary.get("hub_file"))[['ExternalReference', 'HUB_01']]
     results_pre = pd.merge(results_pre, official_hubs, on='ExternalReference', how='left')
     results_post = pd.merge(results_post, official_hubs, on='ExternalReference', how='left')
 
