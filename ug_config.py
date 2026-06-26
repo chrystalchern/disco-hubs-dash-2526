@@ -283,6 +283,7 @@ DESCRIPTIVE_LABELS = {
     "PRIOR_01": "Prior Research Experience",
     "START": "Start Date",
     "END": "End Date",
+    "TIME_IN_PROGRAM": "Number of semesters in program",
 }
 
 DATASET_LABELS = {

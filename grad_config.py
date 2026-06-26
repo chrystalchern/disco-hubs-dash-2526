@@ -148,6 +148,7 @@ DESCRIPTIVE_LABELS = {
     "CLUSTER_SIZE": "Number of undergraduates in cluster",
     "START": "Start Date",
     "END": "End Date",
+    "TIME_IN_PROGRAM": "Number of semesters in program",
 }
 
 DATASET_LABELS = {
