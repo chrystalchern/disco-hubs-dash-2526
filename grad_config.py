@@ -126,7 +126,7 @@ ANS_FORMAT = {
     # "text": ["other"]
 }
 
-FILTERS = ["HUB_01", "CLUSTER_SIZE", "START", "END"]
+FILTERS = ["HUB_01", "CLUSTER_SIZE", "START", "END", "TIME_IN_PROGRAM"]
 MISSING_FILTER_LABEL = "(Missing)"
 FILTER_LABELS = {
     "HUB_01": [

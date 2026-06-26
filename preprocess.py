@@ -137,6 +137,18 @@ def reformat_question(question, width=70):
     if question is not np.nan:
         return f"{textwrap.fill(question, width)}"
 
+def compute_time_in_program(start, end):
+    """Return number of semester student has
+    participated in the Discovery Hubs"""
+    if start == "2025_10_01" and end == "2026_05_16":
+        return 2
+    elif start == "2026_02_28" and end == "2026_05_16":
+        return 1
+    elif start == "2025_10_01" and end == "2025_12_13":
+        return 1
+    else:
+        return None
+
 def preprocess(pp_dictionary, type):
     if type == 'ug':
         results_pre_raw = load_and_stack(pp_dictionary.get('pre_main_data_file'),
@@ -222,21 +234,14 @@ def preprocess(pp_dictionary, type):
     results_pre = pd.merge(results_pre, official_hubs, on='ExternalReference', how='left')
     results_post = pd.merge(results_post, official_hubs, on='ExternalReference', how='left')
 
-    # TODO: Compute time in program
     # Add column to results_pre, results_post, header_pre, and header_post called "TIME_IN_PROGRAM"
     # Fill in column with helper function, compute_time_in_program(start, end)
-    def compute_time_in_program(start, end):
-        """Return number of semester student has
-        participated in the Discovery Hubs"""
-        if start == "..." and end == "...":
-            return 1
-        elif start == "..." and end == "...":
-            return 1
-        elif start == "..." and end == "...":
-            return 2
-    # TODO: Find correct pandas syntax to use compute_time_in_program to fill in the "TIME_IN_PROGRAM" column
-    # results_pre["TIME_IN_PROGRAM"].apply(compute_time_in_program(results_pre["START"],results_pre["END"]))
-    # results_post["TIME_IN_PROGRAM"].apply(compute_time_in_program(results_pre["START"],results_pre["END"]))
+
+    results_pre["TIME_IN_PROGRAM"] = results_pre.apply(lambda row: compute_time_in_program(row['START'], row['END']), axis=1)
+    results_post["TIME_IN_PROGRAM"] = results_post.apply(lambda row: compute_time_in_program(row['START'], row['END']), axis=1)
+
+    header_pre["TIME_IN_PROGRAM"] = ["Number of semesters in program", np.nan]
+    header_post["TIME_IN_PROGRAM"] = ["Number of semesters in program", np.nan]
 
     # Add headers back on
     if verbose >= 2:
@@ -258,11 +263,10 @@ def preprocess(pp_dictionary, type):
 
     pre_cols = results_pre.columns
     post_cols = results_post.columns
-    # TODO: add "TIME_IN_PROGRAM" as a filter
     if type == 'ug':
-        filters = ["HUB_01", "CLUSTER_SIZE", "MENTOR_08", "PRIOR_01", "START", "END"]
+        filters = ["HUB_01", "CLUSTER_SIZE", "MENTOR_08", "PRIOR_01", "START", "END", "TIME_IN_PROGRAM"]
     if type == 'grad':
-        filters = ["HUB_01", "CLUSTER_SIZE", "START", "END"]
+        filters = ["HUB_01", "CLUSTER_SIZE", "START", "END", "TIME_IN_PROGRAM"]
     for col in pre_cols:
         if col not in filters:
             results_pre.loc[0, col] = reformat_question(results_pre.loc[0, col])
