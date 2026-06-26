@@ -6,16 +6,8 @@ primaryColor = "#004AAE"            # Berkeley Blue Medium
 backgroundColor = "#0E1117"         # Dark main background
 secondaryBackgroundColor = "#010133" # Berkeley Blue Dark for sidebar/widget background
 textColor = "#FAFAFA"               # Light text
-chartCategoricalColors = [
-    "#004AAE", # Berkeley Blue Medium (1st category)
-    "#FFE88D"  # Berkeley Gold Light (2nd category)
-]
 
 [theme.light]
 backgroundColor = "#FFFFFF"         # Light main background
 secondaryBackgroundColor = "#FFE88D" # Berkeley Gold Light for sidebar/widget background
 textColor = "#31333F"               # Dark text
-chartCategoricalColors = [
-    "#004AAE", # Berkeley Blue Medium (1st category)
-    "#FC9313"  # Berkeley Gold Dark (2nd category)
-]
