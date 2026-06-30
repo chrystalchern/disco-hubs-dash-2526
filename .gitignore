@@ -2,13 +2,4 @@ __pycache__/
 .DS_Store
 .idea
 
-common_cols.json
-post_only_cols.json
-post_only.csv
-pre_only_cols.json
-pre_only.csv
-pre_post_comparison.csv
-pre_all.csv
-post_all.csv
-
 out/
