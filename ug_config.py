@@ -7,6 +7,7 @@ PREPROCESS = {
     "post_async_data_file": APP_DIR / "ug_results_post_2025_12_13.csv",
     "hub_file": APP_DIR / "ug_official_hubs.csv",
     "cluster_size_file": APP_DIR / "ug_cluster_sizes.csv",
+    "dropped_cols_prepost": [] # TODO: drop Prior research experience and barriers
 }
 DATA_FILES = {
     "pre": APP_DIR / "ug_pre_all.csv",

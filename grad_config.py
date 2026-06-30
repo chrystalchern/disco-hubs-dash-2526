@@ -5,6 +5,7 @@ PREPROCESS = {
     "post_main_data_file": APP_DIR / "grad_results_post_main_2026_05_16.csv",
     "hub_file": APP_DIR / "grad_official_hubs_cluster_sizes.csv",
     "cluster_size_file": APP_DIR / "grad_official_hubs_cluster_sizes.csv",
+    "dropped_cols_prepost": ["PRIOR"]
 }
 DATA_FILES = {
     "pre": APP_DIR / "grad_pre_all.csv",
@@ -16,6 +17,27 @@ RAW_FILES = [
     APP_DIR / "grad_results_post_main_2026_05_16.csv",
     APP_DIR / "grad_official_hubs_cluster_sizes.csv",
 ]
+
+# TODO: Finish making QTYPES_CATEGORIZED
+
+QTYPES_CATEGORIZED = {
+    "PRIOR": [
+        'PRIOR',
+    ],
+    "TIME": [
+        'TIME',
+    ],
+    "REWARD": [
+        'REWARD_01',
+        'REWARD_02',
+    ],
+    "SUPPORT": [
+        'SUPPORT_01',
+        'SUPPORT_02',
+        'SUPPORT_03',
+        'SUPPORT_04',
+    ],
+}
 
 COLS = {
     "prior_semesters" : [
@@ -183,6 +205,13 @@ QTYPE_LABELS = {
     "length": "Preferred project length",
     "timing": "Application timing",
     "other": "Text responses",
+}
+
+# TODO: Finish making labels for new categories. New categories are first word before _ in COLS
+QTYPE_CATEGORY_LABELS = {
+    "PRIOR": "Prior Experience",
+    "TIME": "Time commitment",
+    "REWARD": "Reward",
 }
 
 PAGE_TITLE = "Discovery Hubs AY25-26 Graduate Impact"

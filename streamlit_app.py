@@ -306,7 +306,10 @@ def render_dashboard(cfg):
 
     filtered_rows = apply_filters(rows, selections, filter_cols, cfg.MISSING_FILTER_LABEL)
 
+    # TODO: switch out COLS for QTYPES_CATEGORIZED
+    # TODO: switch out QTYPE_LABELS for QTYPE_CATEGORY_LABELS
     qtypes = available_qtypes(dataset_key, df, cfg.COLS)
+    # qtypes = available_qtypes(dataset_key, df, cfg.QTYPES_CATEGORIZED)
     with st.sidebar:
         st.divider()
         qtype = st.selectbox(
