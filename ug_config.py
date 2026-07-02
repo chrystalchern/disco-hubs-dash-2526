@@ -7,7 +7,7 @@ PREPROCESS = {
     "post_async_data_file": APP_DIR / "ug_results_post_2025_12_13.csv",
     "hub_file": APP_DIR / "ug_official_hubs.csv",
     "cluster_size_file": APP_DIR / "ug_cluster_sizes.csv",
-    "dropped_cols_prepost": [] # TODO: drop Prior research experience and barriers
+    "dropped_cols_prepost": ["PRIOR_01", "ACCESS_01"]
 }
 DATA_FILES = {
     "pre": APP_DIR / "ug_pre_all.csv",
@@ -20,6 +20,76 @@ RAW_FILES = [
     APP_DIR / "ug_official_hubs.csv",
     APP_DIR / "ug_cluster_sizes.csv",
 ]
+
+QTYPES_CATEGORIZED = {
+    "BELONG": [
+        "BELONG_01",
+        "BELONG_02",
+    ],
+    "MENTOR": [
+        "MENTOR_01",
+        "MENTOR_02",
+        "MENTOR_03",
+        "MENTOR_04",
+        "MENTOR_05",
+        "MENTOR_06_1",
+        "MENTOR_06_2",
+        "MENTOR_06_3",
+        "MENTOR_06_4",
+        "MENTOR_06_5",
+        "MENTOR_06_6",
+        "MENTOR_07_1",
+        "MENTOR_07_2",
+        "MENTOR_07_3",
+        "MENTOR_07_4",
+        "MENTOR_07_5",
+    ],
+    "PROFICIENCY": [
+        "PROFICIENCY_01",
+        "PROFICIENCY_02",
+        "PROFICIENCY_03",
+        "PROFICIENCY_04",
+        "PROFICIENCY_05",
+    ],
+    "PRIOR": [
+        "PRIOR_01",
+        "PRIOR_02",
+        "PRIOR_06",
+    ],
+    "MOTIVATION": [
+        "MOTIVATION_01",
+    ],
+    "BARRIERS": [
+        "ACCESS_01",
+        "ACCESS_02",
+        "PRIOR_03",
+    ],
+    "PLANS" : [
+        "PLANS_01",
+        "PLANS_02",
+        "PLANS_03",
+    ],
+    "INTEREST": [
+        "INTEREST_01",
+        "INTEREST_03",
+        "INTEREST_04",
+        "INTEREST_05",
+    ],
+    "FREE_RESPONSE": [
+        "ACCESS_01_7_TEXT",
+        "PRIOR_02_17_TEXT",
+        "ACCESS_02_10_TEXT",
+        "PRIOR_06_3_TEXT",
+        "MOTIVATION_01_8_TEXT",
+        "PLANS_02_9_TEXT",
+        'PRIOR_04', # free response, both pre and post.
+        'PRIOR_05', # free response, post only
+        'PRIOR_07', # free response, post only
+        'INTEREST_02', # free response, post only
+        'INTEREST_06', # free response, post only
+        'TESTIMONIAL',
+    ]
+}
 
 COLS = {
     "agree": [
@@ -312,6 +382,18 @@ QTYPE_LABELS = {
     "length": "Preferred project length",
     "timing": "Application timing",
     "other": "Text responses",
+}
+
+QTYPE_CATEGORY_LABELS = {
+    "BELONG": "Belonging",
+    "MENTOR": "Experience with mentor",
+    "PROFICIENCY": "Proficiency in field",
+    "PRIOR": "Prior experience",
+    "MOTIVATION": "Motivation",
+    "BARRIERS": "Barriers to entry",
+    "PLANS": "Future plans",
+    "INTEREST": "Future interest",
+    "FREE_RESPONSE": "Free response",
 }
 
 PAGE_TITLE = "Discovery Hubs AY25-26 Undergraduate Impact"

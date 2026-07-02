@@ -18,8 +18,6 @@ RAW_FILES = [
     APP_DIR / "grad_official_hubs_cluster_sizes.csv",
 ]
 
-# TODO: Finish making QTYPES_CATEGORIZED
-
 QTYPES_CATEGORIZED = {
     "PRIOR": [
         'PRIOR',
@@ -37,6 +35,48 @@ QTYPES_CATEGORIZED = {
         'SUPPORT_03',
         'SUPPORT_04',
     ],
+    "PROFICIENCY_PROJ": [
+        'PROFICIENCY_PROJ_01',
+        'PROFICIENCY_PROJ_02',
+        'PROFICIENCY_PROJ_03',
+        'PROFICIENCY_PROJ_04',
+    ],
+    "PROFICIENCY_COMM": [
+        'PROFICIENCY_COMM_01',
+        'PROFICIENCY_COMM_02',
+        'PROFICIENCY_COMM_03',
+        'PROFICIENCY_COMM_04',
+        'PROFICIENCY_COMM_05',
+    ],
+    "INTEREST": [
+        "INTEREST_1", # post only
+        "INTEREST_2_1",  # post only
+        "INTEREST_2_4",  # post only
+        "INTEREST_2_5",  # post only
+        "INTEREST_2_6",  # post only
+        "INTEREST_2_9",  # post only
+        "INTEREST_2_10", # post only
+        "INTEREST_2_11", # post only
+        "INTEREST_3", # post only
+        "INTEREST_4_1", # post only
+        "INTEREST_4_2", # post only
+        "INTEREST_4_3", # post only
+        "INTEREST_4_4", # post only
+        "INTEREST_5", # post only
+    ],
+    "MENTOR_FORMAT": [
+        "MENTOR_FORMAT_1_1",  # post only
+    ],
+    "FREE_RESPONSE": [
+        "FUTURE",  # free response
+        "RESOURCES_01",  # free response, post only
+        "MENTOR_FORMAT_2",  # free response, post only
+        "OPPORTUNITIES",  # free response, post only
+        "TESTIM_01", # free response, post only
+        "TESTIM_02", # free response, post only
+        "TESTIM_03", # free response, post only
+        "INTEREST_5_2_TEXT",  # post only
+    ]
 }
 
 COLS = {
@@ -207,11 +247,16 @@ QTYPE_LABELS = {
     "other": "Text responses",
 }
 
-# TODO: Finish making labels for new categories. New categories are first word before _ in COLS
 QTYPE_CATEGORY_LABELS = {
-    "PRIOR": "Prior Experience",
+    "PRIOR": "Prior experience",
     "TIME": "Time commitment",
     "REWARD": "Reward",
+    "SUPPORT": "Support",
+    "PROFICIENCY_PROJ": "Proficiency: managing research projects",
+    "PROFICIENCY_COMM": "Proficiency: communicating & mentoring",
+    "INTEREST": "Future interest",
+    "MENTOR_FORMAT": "Mentor format",
+    "FREE_RESPONSE": "Free response",
 }
 
 PAGE_TITLE = "Discovery Hubs AY25-26 Graduate Impact"
