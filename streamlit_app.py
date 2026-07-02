@@ -306,14 +306,15 @@ def render_dashboard(cfg):
 
     filtered_rows = apply_filters(rows, selections, filter_cols, cfg.MISSING_FILTER_LABEL)
 
-    # qtypes = available_qtypes(dataset_key, df, cfg.COLS)
-    qtypes = available_qtypes(dataset_key, df, cfg.QTYPES_CATEGORIZED)
+    # switch out COLS for QTYPES_CATEGORIZED and QTYPE_LABELS for QTYPE_CATEGORY_LABELS
+    qtypes = available_qtypes(dataset_key, df, cfg.COLS)
+    # qtypes = available_qtypes(dataset_key, df, cfg.QTYPES_CATEGORIZED)
     with st.sidebar:
         st.divider()
         qtype = st.selectbox(
             "Question group",
             qtypes,
-            format_func=lambda value: cfg.QTYPE_CATEGORY_LABELS.get(value, value),
+            format_func=lambda value: cfg.QTYPE_LABELS.get(value, value),
         )
         question_ids = available_questions(dataset_key, df, qtype, cfg.COLS)
         question_id = st.selectbox(
