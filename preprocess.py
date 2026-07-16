@@ -299,8 +299,6 @@ def preprocess(pp_dictionary, type):
                                                                     else x)
     pre_post_comparison = pd.merge(pre_compare,post_compare,
                                 on=identity_col, how='inner')
-    # TODO: uncomment to drop columns
-    # pre_post_comparison.drop(pp_dictionary.get("dropped_cols_prepost"), axis=1, inplace=True)
     pre_post_comparison.drop(identity_col, axis=1, inplace=True)
     pre_post_comparison.to_csv(f"{type}_pre_post_comparison.csv")
     if verbose:

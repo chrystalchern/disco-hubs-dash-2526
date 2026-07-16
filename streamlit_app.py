@@ -54,23 +54,29 @@ def load_data(data_files: dict) -> dict[str, pd.DataFrame]:
         datasets[key] = df
     return datasets
 
-def available_qtypes(dataset_key: str, df: pd.DataFrame, cols_dict: dict) -> list[str]:
+def available_qtypes(
+    dataset_key: str, df: pd.DataFrame, cols_dict: dict, dropped: set[str] | None = None
+) -> list[str]:
     qtypes = []
     for qtype, cols in cols_dict.items():
-        if dataset_key == "comparison":
-            available = any(f"{col}_pre" in df.columns and f"{col}_post" in df.columns for col in cols)
-        else:
-            available = any(col in df.columns for col in cols)
+        available = bool(available_questions(dataset_key, df, qtype, cols_dict, dropped))
         if available:
             qtypes.append(qtype)
     return qtypes
 
-def available_questions(dataset_key: str, df: pd.DataFrame, qtype: str, cols_dict: dict) -> list[str]:
+def available_questions(
+    dataset_key: str, df: pd.DataFrame, qtype: str, cols_dict: dict, dropped: set[str] | None = None
+) -> list[str]:
+    # `dropped` questions are hidden from the pre/post comparison view only; the
+    # underREDACTEDg columns stay in the data so filters that reference them still work.
+    drop = set(dropped) if (dropped and dataset_key == "comparison") else set()
     if dataset_key == "comparison":
         return [
             col
             for col in cols_dict[qtype]
-            if f"{col}_pre" in df.columns and f"{col}_post" in df.columns
+            if col not in drop
+            and f"{col}_pre" in df.columns
+            and f"{col}_post" in df.columns
         ]
     return [col for col in cols_dict[qtype] if col in df.columns]
 
@@ -335,7 +341,8 @@ def render_dashboard(cfg):
     # question's answer format by mapping its column back through COLS.
     col_to_format = {col:fmt for fmt,cols in cfg.COLS.items() for col in cols}
 
-    qtypes = available_qtypes(dataset_key, df, cfg.QTYPES_CATEGORIZED)
+    dropped_prepost = set(getattr(cfg, "PREPROCESS", {}).get("dropped_cols_prepost", []))
+    qtypes = available_qtypes(dataset_key, df, cfg.QTYPES_CATEGORIZED, dropped_prepost)
     with st.sidebar:
         st.divider()
         qtype = st.selectbox(
@@ -343,7 +350,7 @@ def render_dashboard(cfg):
             qtypes,
             format_func=lambda value: cfg.QTYPE_CATEGORY_LABELS.get(value, value),
         )
-        question_ids = available_questions(dataset_key, df, qtype, cfg.QTYPES_CATEGORIZED)
+        question_ids = available_questions(dataset_key, df, qtype, cfg.QTYPES_CATEGORIZED, dropped_prepost)
         question_id = st.selectbox(
             "Question",
             question_ids,
