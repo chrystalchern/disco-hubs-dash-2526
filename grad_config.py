@@ -49,7 +49,7 @@ QTYPES_CATEGORIZED = {
         'PROFICIENCY_COMM_05',
     ],
     "INTEREST": [
-        "INTEREST_1", # post only
+        "INTEREST_01", # post only
         "INTEREST_2_1",  # post only
         "INTEREST_2_4",  # post only
         "INTEREST_2_5",  # post only
@@ -109,7 +109,7 @@ COLS = {
         "MENTOR_FORMAT_1_1" # post only
     ],
     "yesno": [
-        "INTEREST_1" # post only
+        "INTEREST_01" # post only
     ],
     "rank_aspects": [
         "INTEREST_2_1",  # post only
@@ -187,8 +187,7 @@ LABELS = {
 
 
 ANS_FORMAT = {
-    # "single_select": ["prior_semesters","prior_weekly","agree","proficiency","yesno"],
-    "single_select": ["prior_semesters","prior_weekly","agree","proficiency"],
+    "single_select": ["prior_semesters","prior_weekly","agree","proficiency","yesno"],
     "multi_select": ["length","topics"],
     "slider": ["slider"],
     "ranking": ["rank_aspects","rank_format"],
