@@ -266,6 +266,19 @@ def filtered_question_rows(
 def render_dashboard(cfg):
     st.title(cfg.PAGE_TITLE)
 
+    # Cap the height of multiselect filter boxes to ~2 rows of tags; scroll the rest.
+    st.markdown(
+        """
+        <style>
+        [data-testid="stSidebar"] [data-baseweb="select"] > div:first-child {
+            max-height: 4.5rem;
+            overflow-y: auto;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
     if needs_preprocess(cfg.DATA_FILES, cfg.RAW_FILES):
         with st.spinner("Preparing survey data"):
             result = run_preprocess(cfg.APP_DIR)
@@ -307,10 +320,13 @@ def render_dashboard(cfg):
             options = filter_options(rows, col, filter_id, cfg.FILTER_LABELS, cfg.MISSING_FILTER_LABEL)
             # Fetch a descriptive label if available, otherwise fallback to ID
             label = getattr(cfg, "DESCRIPTIVE_LABELS", {}).get(filter_id, filter_id)
+            # Pretty display labels for option values (values stay raw so filtering works).
+            value_labels = getattr(cfg, "FILTER_VALUE_LABELS", {}).get(filter_id, {})
             selections[filter_id] = st.multiselect(
                 label,
                 options,
                 default=options,
+                format_func=lambda v, m=value_labels: m.get(v, v),
             )
 
     filtered_rows = apply_filters(rows, selections, filter_cols, cfg.MISSING_FILTER_LABEL)
