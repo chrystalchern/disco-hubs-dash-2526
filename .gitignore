@@ -6,3 +6,4 @@ out/
 
 # preprocessing information: columns included in dataset
 *_cols.json
+.vscode/
