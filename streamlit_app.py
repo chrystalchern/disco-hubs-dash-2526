@@ -306,25 +306,28 @@ def render_dashboard(cfg):
 
     filtered_rows = apply_filters(rows, selections, filter_cols, cfg.MISSING_FILTER_LABEL)
 
-    # switch out COLS for QTYPES_CATEGORIZED and QTYPE_LABELS for QTYPE_CATEGORY_LABELS
-    qtypes = available_qtypes(dataset_key, df, cfg.COLS)
-    # qtypes = available_qtypes(dataset_key, df, cfg.QTYPES_CATEGORIZED)
+    # Group questions by topical category (QTYPES_CATEGORIZED), but derive each
+    # question's answer format by mapping its column back through COLS.
+    col_to_format = {col:fmt for fmt,cols in cfg.COLS.items() for col in cols}
+
+    qtypes = available_qtypes(dataset_key, df, cfg.QTYPES_CATEGORIZED)
     with st.sidebar:
         st.divider()
         qtype = st.selectbox(
             "Question group",
             qtypes,
-            format_func=lambda value: cfg.QTYPE_LABELS.get(value, value),
+            format_func=lambda value: cfg.QTYPE_CATEGORY_LABELS.get(value, value),
         )
-        question_ids = available_questions(dataset_key, df, qtype, cfg.COLS)
+        question_ids = available_questions(dataset_key, df, qtype, cfg.QTYPES_CATEGORIZED)
         question_id = st.selectbox(
             "Question",
             question_ids,
             format_func=lambda value: f"{value}: {question_text(dataset_key, df, value)}",
         )
 
-    labels = cfg.LABELS.get(qtype, [])
-    kind = answer_kind(qtype, cfg.ANS_FORMAT)
+    ans_format = col_to_format.get(question_id)
+    labels = cfg.LABELS.get(ans_format, [])
+    kind = answer_kind(ans_format, cfg.ANS_FORMAT)
     question = question_text(dataset_key, df, question_id)
 
     st.caption(cfg.DATASET_LABELS[dataset_key])
@@ -355,7 +358,7 @@ def render_dashboard(cfg):
         return
 
     if dataset_key == "comparison":
-        table = comparison_distribution(filtered_rows, question_id, qtype, labels, cfg.ANS_FORMAT)
+        table = comparison_distribution(filtered_rows, question_id, ans_format, labels, cfg.ANS_FORMAT)
         tabs = st.tabs(["Summary", "Filtered rows"])
         with tabs[0]:
             display_comparison(table)
