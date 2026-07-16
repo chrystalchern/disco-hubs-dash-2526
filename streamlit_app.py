@@ -271,7 +271,7 @@ def render_dashboard(cfg):
         """
         <style>
         [data-testid="stSidebar"] [data-baseweb="select"] > div:first-child {
-            max-height: 4.5rem;
+            max-height: 5.5rem;
             overflow-y: auto;
         }
         </style>
