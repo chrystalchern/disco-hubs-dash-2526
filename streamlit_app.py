@@ -244,13 +244,22 @@ def filtered_question_rows(
     filter_cols: dict[str, str],
     filters_list: list
 ) -> pd.DataFrame:
-    cols = [filter_cols[filter_id] for filter_id in filters_list if filter_id in filter_cols]
-    if dataset_key == "comparison":
-        cols.extend([f"{col}_pre", f"{col}_post"])
-    else:
-        cols.append(col)
-    out = rows[[column for column in cols if column in rows.columns]].copy()
-    out = out.rename(columns={filter_cols.get(filter_id, ""): filter_id for filter_id in filters_list})
+    # Ordered mapping of output label -> source column in `rows`.
+    # A question that is also a filter (e.g. PRIOR_01) must not be selected
+    # twice, or the rename collapses both into a duplicate column name.
+    mapping: dict[str, str] = {}
+    for filter_id in filters_list:
+        src = filter_cols.get(filter_id)
+        if src and src in rows.columns:
+            mapping[filter_id] = src
+
+    question_cols = [f"{col}_pre", f"{col}_post"] if dataset_key == "comparison" else [col]
+    for qcol in question_cols:
+        if qcol in rows.columns and qcol not in mapping:
+            mapping[qcol] = qcol
+
+    out = rows[list(mapping.values())].copy()
+    out.columns = list(mapping.keys())
     return out
 
 
