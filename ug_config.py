@@ -349,12 +349,22 @@ FILTER_LABELS = {
 }
 DESCRIPTIVE_LABELS = {
     "HUB_01": "Hub",
-    "MENTOR_08": "Average time spent with mentor",
+    "MENTOR_08": "Average time spent with mentor (hrs/wk)",
     "CLUSTER_SIZE": "Number of undergraduates in cluster",
     "PRIOR_01": "Prior Research Experience",
     "START": "Start Date",
     "END": "End Date",
     "TIME_IN_PROGRAM": "Number of semesters in program",
+}
+
+# Pretty display labels for filter option values (keys are the raw data values).
+FILTER_VALUE_LABELS = {
+    "MENTOR_08": {
+        "More than zero, but less than one hour per week": "0-1",
+        "1-2 hrs/wk": "1-2",
+        "3-4 hrs/week": "3-4",
+        "More than 5 hrs/week": "5+",
+    },
 }
 
 DATASET_LABELS = {
