@@ -7,3 +7,8 @@ out/
 # preprocessing information: columns included in dataset
 *_cols.json
 .vscode/
+
+# Raw preprocessing inputs with PII (CalNet IDs, names, emails, IPs, geolocation)
+*_results_*.csv
+*_official_hubs*.csv
+*_cluster_sizes.csv

@@ -1,27 +1,8 @@
 from __future__ import annotations
 
-import subprocess
-import sys
-from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-
-def run_preprocess(app_dir: Path) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        [sys.executable, str(app_dir / "preprocess.py")],
-        cwd=app_dir,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-
-def needs_preprocess(data_files: dict, raw_files: list) -> bool:
-    if not all(path.exists() for path in data_files.values()):
-        return True
-    newest_raw = max(path.stat().st_mtime for path in raw_files if path.exists())
-    oldest_processed = min(path.stat().st_mtime for path in data_files.values())
-    return newest_raw > oldest_processed
 
 def clean_label(value: object) -> str | None:
     if pd.isna(value):
@@ -285,24 +266,7 @@ def render_dashboard(cfg):
         unsafe_allow_html=True,
     )
 
-    if needs_preprocess(cfg.DATA_FILES, cfg.RAW_FILES):
-        with st.spinner("Preparing survey data"):
-            result = run_preprocess(cfg.APP_DIR)
-        if result.returncode != 0:
-            st.error("The preprocessing step failed.")
-            st.code(result.stderr or result.stdout)
-            st.stop()
-
     with st.sidebar:
-        if st.button("Refresh data"):
-            result = run_preprocess(cfg.APP_DIR)
-            st.cache_data.clear()
-            if result.returncode != 0:
-                st.error("Refresh failed.")
-                st.code(result.stderr or result.stdout)
-                st.stop()
-            st.success("Data refreshed.")
-
         datasets = load_data(cfg.DATA_FILES)
         dataset_key = st.radio(
             "Dataset",

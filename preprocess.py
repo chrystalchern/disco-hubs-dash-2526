@@ -308,11 +308,17 @@ def preprocess(pp_dictionary, type):
         print(F"\nTotal number of responders that responded to BOTH the pre and the post:")
         print(f"{len(pre_post_comparison)=}; 2 rows are question metadata which means N={len(pre_post_comparison)-2}")
 
+    # Direct identifiers to keep out of any committed/published CSV.
+    identifier_cols = [
+        'ExternalReference', 'IPAddress', 'LocationLatitude', 'LocationLongitude',
+        'RecipientEmail', 'RecipientFirstName', 'RecipientLastName', 'CALNETUSER',
+    ]
+
     ## ii) Dataframe of **ALL** the questions that appear in the pre-survey
-    results_pre.to_csv(f"{type}_pre_all.csv")
+    results_pre.drop(columns=identifier_cols, errors='ignore').to_csv(f"{type}_pre_all.csv")
 
     ## ii) Dataframe of **ALL** the questions that appear in the post-survey
-    results_post.to_csv(f"{type}_post_all.csv")
+    results_post.drop(columns=identifier_cols, errors='ignore').to_csv(f"{type}_post_all.csv")
 
     ## iv) Dataframe of the questions that only appear in the pre-survey, but keep filtering columns
     common_cols_minus_filters = [c for c in common_cols if c not in filters]
