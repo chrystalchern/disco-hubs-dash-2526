@@ -12,3 +12,6 @@ out/
 *_results_*.csv
 *_official_hubs*.csv
 *_cluster_sizes.csv
+
+# Archived project bundle containing raw PII survey exports
+discovery_survey.zip
