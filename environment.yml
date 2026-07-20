@@ -5,3 +5,6 @@ dependencies:
   - pandas
   - matplotlib
   - plotly
+  - pip
+  - pip:
+      - streamlit==1.57.0
