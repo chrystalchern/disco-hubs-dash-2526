@@ -215,7 +215,7 @@ LABELS = {
     ],
     "plans_03": [
         "Position secured or offer accepted",
-        "Actively appREDACTEDg",
+        "Actively applying",
         "Strongly considering",
         "Generally considering",
         "Exploring options",

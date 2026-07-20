@@ -49,7 +49,7 @@ def available_questions(
     dataset_key: str, df: pd.DataFrame, qtype: str, cols_dict: dict, dropped: set[str] | None = None
 ) -> list[str]:
     # `dropped` questions are hidden from the pre/post comparison view only; the
-    # underREDACTEDg columns stay in the data so filters that reference them still work.
+    # underlying columns stay in the data so filters that reference them still work.
     drop = set(dropped) if (dropped and dataset_key == "comparison") else set()
     if dataset_key == "comparison":
         return [
@@ -150,7 +150,6 @@ def display_distribution(table: pd.DataFrame) -> None:
     st.bar_chart(chart_data, height=320)
     st.dataframe(
         table,
-        # use_container_width=True,
         width = 'stretch',
         hide_index=True,
         column_config={
@@ -203,7 +202,6 @@ def display_comparison(table: pd.DataFrame) -> None:
 
     st.dataframe(
         table,
-        # use_container_width=True,
         width = 'stretch',
         hide_index=True,
         column_config={
@@ -347,7 +345,6 @@ def render_dashboard(cfg):
         with tabs[2]:
             st.dataframe(
                 filtered_question_rows(filtered_rows, dataset_key, question_id, filter_cols, cfg.FILTERS),
-                # use_container_width=True,
                 width='stretch',
                 hide_index=True,
             )
@@ -367,7 +364,6 @@ def render_dashboard(cfg):
         with tabs[1]:
             st.dataframe(
                 filtered_question_rows(filtered_rows, dataset_key, question_id, filter_cols, cfg.FILTERS),
-                # use_container_width=True,
                 width='stretch',
                 hide_index=True,
             )
@@ -401,7 +397,6 @@ def render_dashboard(cfg):
     with tabs[1]:
         st.dataframe(
             filtered_question_rows(filtered_rows, dataset_key, question_id, filter_cols, cfg.FILTERS),
-            # use_container_width=True,
             width = 'stretch',
             hide_index=True,
         )
