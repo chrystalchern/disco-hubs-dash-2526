@@ -69,7 +69,7 @@ def load_and_stack(main_file, async_file, date_col, meta_label, async_rename_dic
 
     # Apply one-off column corrections if provided
     if async_rename_dict:
-        async_df.rename(columns=async_rename_dict, inplace=True)
+        async_df = async_df.rename(columns=async_rename_dict)
 
     # Check for column mismatches
     main_cols = list(main_df.columns)
@@ -181,23 +181,23 @@ def preprocess(pp_dictionary, type):
     results_post = results_post_raw.drop(labels=extra_cols, axis=1, errors='ignore').iloc[2:].copy()
 
     ## ii)  Responses with null 'ExternalReference'
-    results_pre.dropna(subset=['ExternalReference'], inplace=True)
-    results_post.dropna(subset=['ExternalReference'], inplace=True)
+    results_pre = results_pre.dropna(subset=['ExternalReference'])
+    results_post = results_post.dropna(subset=['ExternalReference'])
 
     # iii) Duplicate users, keep the more complete response
     ## Sort by Response Id first (latest first)
-    results_pre.sort_values('ResponseId', ascending=False, inplace=True, kind='mergesort')
-    results_post.sort_values('ResponseId', ascending=False, inplace=True, kind='mergesort')
+    results_pre = results_pre.sort_values('ResponseId', ascending=False, kind='mergesort')
+    results_post = results_post.sort_values('ResponseId', ascending=False, kind='mergesort')
 
     ## Then count notnas, sort by notna_count (most first), then drop duplicates, keep first
     results_pre['notna_count'] = results_pre.notna().sum(axis=1)
-    results_pre.sort_values('notna_count', ascending=False, inplace=True, kind='mergesort')
-    results_pre.drop_duplicates(subset=['ExternalReference'], keep='first', inplace=True)
-    results_pre.drop('notna_count', axis=1, inplace=True)
+    results_pre = results_pre.sort_values('notna_count', ascending=False, kind='mergesort')
+    results_pre = results_pre.drop_duplicates(subset=['ExternalReference'], keep='first')
+    results_pre = results_pre.drop('notna_count', axis=1)
     results_post['notna_count'] = results_post.notna().sum(axis=1)
-    results_post.sort_values('notna_count', ascending=False, inplace=True, kind='mergesort')
-    results_post.drop_duplicates(subset=['ExternalReference'], keep='first', inplace=True)
-    results_post.drop('notna_count', axis=1, inplace=True)
+    results_post = results_post.sort_values('notna_count', ascending=False, kind='mergesort')
+    results_post = results_post.drop_duplicates(subset=['ExternalReference'], keep='first')
+    results_post = results_post.drop('notna_count', axis=1)
 
     # 2) Add columns such as CLUSTER SIZE and time spent with mentor
     # For UG data:
@@ -258,8 +258,8 @@ def preprocess(pp_dictionary, type):
     # Because this question had fewer possible answers
     # in the post and therefore was named ACCESS_01_7_TEXT.
     if type == 'ug':
-        results_pre.rename(columns={'BELONG': 'BELONG_01'}, inplace=True)
-        results_pre.rename(columns={'ACCESS_01_19_TEXT': 'ACCESS_01_7_TEXT'}, inplace=True)
+        results_pre = results_pre.rename(columns={'BELONG': 'BELONG_01'})
+        results_pre = results_pre.rename(columns={'ACCESS_01_19_TEXT': 'ACCESS_01_7_TEXT'})
 
     pre_cols = results_pre.columns
     post_cols = results_post.columns
@@ -299,7 +299,7 @@ def preprocess(pp_dictionary, type):
                                                                     else x)
     pre_post_comparison = pd.merge(pre_compare,post_compare,
                                 on=identity_col, how='inner')
-    pre_post_comparison.drop(identity_col, axis=1, inplace=True)
+    pre_post_comparison = pre_post_comparison.drop(identity_col, axis=1)
     pre_post_comparison.to_csv(f"{type}_pre_post_comparison.csv")
     if verbose:
         print(f"\nTotal number of responders in pre and post:")
