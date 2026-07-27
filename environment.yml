@@ -6,6 +6,7 @@ dependencies:
       - streamlit==1.57.0
       - numpy==2.4.6
       - pandas==3.0.3
+      - pyarrow==24.0.0  # pin: pyarrow 25 segfaults with pandas 3.0 string dtype on Streamlit Cloud
       - scipy==1.17.1
       - matplotlib==3.10.9
       - plotly==6.7.0
