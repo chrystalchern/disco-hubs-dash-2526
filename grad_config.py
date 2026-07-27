@@ -49,20 +49,13 @@ QTYPES_CATEGORIZED = {
         'PROFICIENCY_COMM_05',
     ],
     "INTEREST": [
-        "INTEREST_01", # post only
-        "INTEREST_2_1",  # post only
-        "INTEREST_2_4",  # post only
-        "INTEREST_2_5",  # post only
-        "INTEREST_2_6",  # post only
-        "INTEREST_2_9",  # post only
-        "INTEREST_2_10", # post only
-        "INTEREST_2_11", # post only
-        "INTEREST_3", # post only
-        "INTEREST_4_1", # post only
-        "INTEREST_4_2", # post only
-        "INTEREST_4_3", # post only
-        "INTEREST_4_4", # post only
-        "INTEREST_5", # post only
+        "INTEREST_01",        # post only
+        "INTEREST_02_1",      # post only - aspects ranking (one entry represents the whole ranking group)
+        "INTEREST_03",        # post only - preferred project length
+        "INTEREST_04_1",      # post only - workshop-format ranking (one entry represents the whole ranking group)
+        "INTEREST_05",        # post only - workshop topics
+        "INTEREST_06",        # post only - free response
+        "INTEREST_01_3_TEXT", # post only - free response ("Other" for INTEREST_01)
     ],
     "MENTOR_FORMAT": [
         "MENTOR_FORMAT_1_1",  # post only
@@ -112,25 +105,25 @@ COLS = {
         "INTEREST_01" # post only
     ],
     "rank_aspects": [
-        "INTEREST_2_1",  # post only
-        "INTEREST_2_4",  # post only
-        "INTEREST_2_5",  # post only
-        "INTEREST_2_6",  # post only
-        "INTEREST_2_9",  # post only
-        "INTEREST_2_10", # post only
-        "INTEREST_2_11", # post only
+        "INTEREST_02_1", # post only - item order matches LABELS["rank_aspects"]
+        "INTEREST_02_2", # post only
+        "INTEREST_02_3", # post only
+        "INTEREST_02_4", # post only
+        "INTEREST_02_5", # post only
+        "INTEREST_02_6", # post only
+        "INTEREST_02_7", # post only
     ],
     "length": [
-        "INTEREST_3" # post only
+        "INTEREST_03" # post only
     ],
     "rank_format": [
-        "INTEREST_4_1", # post only
-        "INTEREST_4_2", # post only
-        "INTEREST_4_3", # post only
-        "INTEREST_4_4", # post only
+        "INTEREST_04_1", # post only - item order matches LABELS["rank_format"]
+        "INTEREST_04_2", # post only
+        "INTEREST_04_3", # post only
+        "INTEREST_04_4", # post only
     ],
     "topics": [
-        "INTEREST_5" # post only
+        "INTEREST_05" # post only
     ],
     "other": [
         "FUTURE", # free response
@@ -140,7 +133,8 @@ COLS = {
         "TESTIM_01", # free response, post only
         "TESTIM_02", # free response, post only
         "TESTIM_03", # free response, post only
-        "INTEREST_5_2_TEXT" # post only
+        "INTEREST_06", # free response, post only
+        "INTEREST_01_3_TEXT", # free response, post only
     ]
 }
 
@@ -256,6 +250,28 @@ QTYPE_CATEGORY_LABELS = {
     "INTEREST": "Future interest",
     "MENTOR_FORMAT": "Mentor format",
     "FREE_RESPONSE": "Free response",
+}
+
+# For pre/post comparison, some questions asked about different subjects pre vs
+# post. Override the pre/post series labels so the plot reflects what respondents
+# were actually asked. Keyed by question id (base column, no _pre/_post suffix).
+COMPARISON_SERIES_LABELS = {
+    col: {"pre": "My Grad Program", "post": "The Discovery Hub"}
+    for col in ["SUPPORT_01", "SUPPORT_02", "SUPPORT_03", "SUPPORT_04"]
+}
+
+# Chart title for comparison questions whose pre/post prompts differed. Merges the
+# two subjects so the title isn't misleadingly one-sided. Keyed by question id.
+COMPARISON_TITLES = {
+    "SUPPORT_01": "My Grad Program / The Discovery Hub has supported my development as a researcher",
+    "SUPPORT_02": "My Grad Program / The Discovery Hub has provided me with opportunities to take on leadership roles",
+    "SUPPORT_03": "My Grad Program / The Discovery Hub has helped me develop strong leadership skills",
+    "SUPPORT_04": "My Grad Program / The Discovery Hub has prepared me for the next step in my career",
+}
+
+# Endpoint labels for slider questions (0 -> low, 100 -> high), keyed by question id.
+SLIDER_ANCHORS = {
+    "MENTOR_FORMAT_1_1": ("Discovery Research Hub", "Traditional graduate research structure"),
 }
 
 PAGE_TITLE = "Discovery Hubs AY25-26 Graduate Impact"

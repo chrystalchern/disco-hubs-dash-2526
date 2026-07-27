@@ -147,7 +147,7 @@ def text_responses(rows: pd.DataFrame, col: str) -> pd.DataFrame:
 
 def display_distribution(table: pd.DataFrame) -> None:
     chart_data = table.set_index("Response")["Percent"]
-    st.bar_chart(chart_data, height=320)
+    st.bar_chart(chart_data, height=320, sort=False)
     st.dataframe(
         table,
         width = 'stretch',
@@ -189,8 +189,10 @@ def comparison_distribution(
     table = table.sort_values("Response").reset_index(drop=True)
     return table
 
-def display_comparison(table: pd.DataFrame) -> None:
-    chart = table.set_index("Response")[["Percent Pre", "Percent Post"]]
+def display_comparison(table: pd.DataFrame, pre_label: str = "Pre", post_label: str = "Post") -> None:
+    chart = table.set_index("Response")[["Percent Pre", "Percent Post"]].rename(
+        columns={"Percent Pre": pre_label, "Percent Post": post_label}
+    )
 
     st.bar_chart(
         chart,
@@ -206,14 +208,14 @@ def display_comparison(table: pd.DataFrame) -> None:
         hide_index=True,
         column_config={
             "Percent Pre": st.column_config.ProgressColumn(
-                "Pre %",
+                f"{pre_label} %",
                 format="%.1f%%",
                 min_value=0,
                 max_value=100,
                 color="#002676",
             ),
             "Percent Post": st.column_config.ProgressColumn(
-                "Post %",
+                f"{post_label} %",
                 format="%.1f%%",
                 min_value=0,
                 max_value=100,
@@ -243,6 +245,112 @@ def filtered_question_rows(
         if qcol in rows.columns and qcol not in mapping:
             mapping[qcol] = qcol
 
+    out = rows[list(mapping.values())].copy()
+    out.columns = list(mapping.keys())
+    return out
+
+
+def clean_stem(text: str) -> str:
+    # Ranking / slider Qualtrics prompts end with a " - <item>" segment; drop it
+    # so the consolidated question shows just the shared stem.
+    return text.rsplit(" - ", 1)[0].strip() if " - " in text else text
+
+def question_label(dataset_key: str, df: pd.DataFrame, col: str, cfg, col_to_format: dict) -> str:
+    text = question_text(dataset_key, df, col)
+    fmt = col_to_format.get(col)
+    kind = None
+    if fmt is not None:
+        try:
+            kind = answer_kind(fmt, cfg.ANS_FORMAT)
+        except ValueError:
+            kind = None
+    return clean_stem(text) if kind in ("ranking", "slider") else text
+
+def display_title(dataset_key: str, df: pd.DataFrame, col: str, cfg, col_to_format: dict) -> str:
+    # In comparison view, prefer a configured merged title (used for questions whose
+    # pre/post prompts differed) so the dropdown and chart heading read the same.
+    if dataset_key == "comparison":
+        override = getattr(cfg, "COMPARISON_TITLES", {}).get(col)
+        if override:
+            return override
+    return question_label(dataset_key, df, col, cfg, col_to_format)
+
+def slider_values(rows: pd.DataFrame, col: str) -> pd.Series:
+    return pd.to_numeric(rows[col], errors="coerce").dropna()
+
+def display_slider(values: pd.Series, low_label: str, high_label: str) -> None:
+    import altair as alt
+    if values.empty:
+        st.info("No responses to display for the current filters.")
+        return
+    data = pd.DataFrame({"value": values.astype(float).values})
+    points = (
+        alt.Chart(data)
+        .mark_circle(size=110, opacity=0.45, color="#004AAE")
+        .encode(
+            x=alt.X("value:Q", scale=alt.Scale(domain=[0, 100]),
+                    axis=alt.Axis(values=[0, 25, 50, 75, 100], title=None, labelFontSize=13)),
+            y=alt.Y("jitter:Q", axis=None, scale=alt.Scale(domain=[-1, 1])),
+            tooltip=[alt.Tooltip("value:Q", title="Response")],
+        )
+        .transform_calculate(jitter="random() * 1.2 - 0.6")
+    )
+    mean_rule = (
+        alt.Chart(pd.DataFrame({"m": [float(values.mean())]}))
+        .mark_rule(color="#FDB515", size=3)
+        .encode(x="m:Q")
+    )
+    st.altair_chart((points + mean_rule).properties(height=140), use_container_width=True)
+    left, right = st.columns(2)
+    left.markdown(f"**0** · {low_label}")
+    right.markdown(f"<div style='text-align:right'>{high_label} · <b>100</b></div>", unsafe_allow_html=True)
+    st.caption(f"Mean {values.mean():.1f} · median {values.median():.0f} · n = {len(values)} (gold line = mean)")
+
+def rank_distribution(rows: pd.DataFrame, cols: list[str], labels: list[str]) -> pd.DataFrame:
+    records = []
+    for col, label in zip(cols, labels):
+        ranks = pd.to_numeric(rows[col], errors="coerce").dropna()
+        if len(ranks):
+            records.append({
+                "Item": label,
+                "Average rank": round(float(ranks.mean()), 2),
+                "Responses": int(len(ranks)),
+            })
+    table = pd.DataFrame(records, columns=["Item", "Average rank", "Responses"])
+    return table.sort_values("Average rank").reset_index(drop=True)
+
+def display_ranking(table: pd.DataFrame) -> None:
+    import altair as alt
+    if table.empty:
+        st.info("No responses to display for the current filters.")
+        return
+    chart = (
+        alt.Chart(table)
+        .mark_bar(color="#004AAE")
+        .encode(
+            x=alt.X("Average rank:Q", axis=alt.Axis(labelFontSize=13, titleFontSize=14)),
+            y=alt.Y("Item:N", title=None,
+                    sort=alt.EncodingSortField(field="Average rank", order="ascending"),
+                    axis=alt.Axis(labelFontSize=13, labelLimit=320)),
+            tooltip=["Item", "Average rank", "Responses"],
+        )
+        .properties(height=max(140, 50 * len(table)))
+    )
+    st.altair_chart(chart, use_container_width=True)
+    st.caption("Bars show mean rank across respondents — shorter is more preferred (1 = top choice).")
+
+def ranking_rows_view(
+    rows: pd.DataFrame, cols: list[str], labels: list[str],
+    filter_cols: dict[str, str], filters_list: list
+) -> pd.DataFrame:
+    mapping: dict[str, str] = {}
+    for filter_id in filters_list:
+        src = filter_cols.get(filter_id)
+        if src and src in rows.columns:
+            mapping[filter_id] = src
+    for col, label in zip(cols, labels):
+        if col in rows.columns and label not in mapping:
+            mapping[label] = col
     out = rows[list(mapping.values())].copy()
     out.columns = list(mapping.keys())
     return out
@@ -316,13 +424,13 @@ def render_dashboard(cfg):
         question_id = st.selectbox(
             "Question",
             question_ids,
-            format_func=lambda value: f"{value}: {question_text(dataset_key, df, value)}",
+            format_func=lambda value: f"{value}: {display_title(dataset_key, df, value, cfg, col_to_format)}",
         )
 
     ans_format = col_to_format.get(question_id)
     labels = cfg.LABELS.get(ans_format, [])
     kind = answer_kind(ans_format, cfg.ANS_FORMAT)
-    question = question_text(dataset_key, df, question_id)
+    question = display_title(dataset_key, df, question_id, cfg, col_to_format)
 
     st.caption(cfg.DATASET_LABELS[dataset_key])
     st.subheader(question)
@@ -352,9 +460,13 @@ def render_dashboard(cfg):
 
     if dataset_key == "comparison":
         table = comparison_distribution(filtered_rows, question_id, ans_format, labels, cfg.ANS_FORMAT)
+        series = getattr(cfg, "COMPARISON_SERIES_LABELS", {}).get(question_id)
         tabs = st.tabs(["Summary", "Filtered rows"])
         with tabs[0]:
-            display_comparison(table)
+            if series:
+                display_comparison(table, series["pre"], series["post"])
+            else:
+                display_comparison(table)
             st.download_button(
                 "Download summary CSV",
                 table.to_csv(index=False).encode("utf-8"),
@@ -378,6 +490,48 @@ def render_dashboard(cfg):
             file_name=f"{question_id}_responses.csv",
             mime="text/csv",
         )
+        return
+
+    if kind == "slider":
+        values = slider_values(filtered_rows, question_id)
+        low, high = getattr(cfg, "SLIDER_ANCHORS", {}).get(question_id, ("0", "100"))
+        tabs = st.tabs(["Summary", "Filtered rows"])
+        with tabs[0]:
+            display_slider(values, low, high)
+            st.download_button(
+                "Download responses CSV",
+                values.rename("value").to_csv(index=False).encode("utf-8"),
+                file_name=f"{question_id}_slider.csv",
+                mime="text/csv",
+            )
+        with tabs[1]:
+            st.dataframe(
+                filtered_question_rows(filtered_rows, dataset_key, question_id, filter_cols, cfg.FILTERS),
+                width='stretch',
+                hide_index=True,
+            )
+        return
+
+    if kind == "ranking":
+        rank_cols = [c for c in cfg.COLS[ans_format] if c in filtered_rows.columns]
+        col_to_item = {c: cfg.LABELS[ans_format][i] for i, c in enumerate(cfg.COLS[ans_format])}
+        item_labels = [col_to_item[c] for c in rank_cols]
+        table = rank_distribution(filtered_rows, rank_cols, item_labels)
+        tabs = st.tabs(["Summary", "Filtered rows"])
+        with tabs[0]:
+            display_ranking(table)
+            st.download_button(
+                "Download summary CSV",
+                table.to_csv(index=False).encode("utf-8"),
+                file_name=f"{question_id}_ranking.csv",
+                mime="text/csv",
+            )
+        with tabs[1]:
+            st.dataframe(
+                ranking_rows_view(filtered_rows, rank_cols, item_labels, filter_cols, cfg.FILTERS),
+                width='stretch',
+                hide_index=True,
+            )
         return
 
     if kind == "multi_select":
