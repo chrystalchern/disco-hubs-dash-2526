@@ -300,7 +300,7 @@ def display_slider(values: pd.Series, low_label: str, high_label: str) -> None:
         .mark_rule(color="#FDB515", size=3)
         .encode(x="m:Q")
     )
-    st.altair_chart((points + mean_rule).properties(height=140), use_container_width=True)
+    st.altair_chart((points + mean_rule).properties(height=140), width = 'stretch')
     left, right = st.columns(2)
     left.markdown(f"**0** · {low_label}")
     right.markdown(f"<div style='text-align:right'>{high_label} · <b>100</b></div>", unsafe_allow_html=True)
@@ -336,7 +336,7 @@ def display_ranking(table: pd.DataFrame) -> None:
         )
         .properties(height=max(140, 50 * len(table)))
     )
-    st.altair_chart(chart, use_container_width=True)
+    st.altair_chart(chart, width='stretch')
     st.caption("Bars show mean rank across respondents — shorter is more preferred (1 = top choice).")
 
 def ranking_rows_view(
