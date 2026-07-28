@@ -54,6 +54,7 @@ QTYPES_CATEGORIZED = {
         "INTEREST_03",        # post only - preferred project length
         "INTEREST_04_1",      # post only - workshop-format ranking (one entry represents the whole ranking group)
         "INTEREST_05",        # post only - workshop topics
+        "INTEREST_5_2_TEXT",  # post only - free response ("Other" for INTEREST_05)
         "INTEREST_06",        # post only - free response
         "INTEREST_01_3_TEXT", # post only - free response ("Other" for INTEREST_01)
     ],
@@ -68,7 +69,6 @@ QTYPES_CATEGORIZED = {
         "TESTIM_01", # free response, post only
         "TESTIM_02", # free response, post only
         "TESTIM_03", # free response, post only
-        "INTEREST_5_2_TEXT",  # post only
     ]
 }
 

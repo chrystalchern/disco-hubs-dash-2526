@@ -54,19 +54,25 @@ QTYPES_CATEGORIZED = {
     "PRIOR": [
         "PRIOR_01",
         "PRIOR_02",
+        "PRIOR_02_17_TEXT", # free response ("Other" for PRIOR_02)
         "PRIOR_06",
+        "PRIOR_06_3_TEXT", # free response ("Other" for PRIOR_06)
     ],
     "MOTIVATION": [
         "MOTIVATION_01",
+        "MOTIVATION_01_8_TEXT", # free response ("Other" for MOTIVATION_01)
     ],
     "BARRIERS": [
         "ACCESS_01",
+        "ACCESS_01_7_TEXT", # free response ("Other" for ACCESS_01)
         "ACCESS_02",
+        "ACCESS_02_10_TEXT", # free response ("Other" for ACCESS_02)
         "PRIOR_03",
     ],
     "PLANS" : [
         "PLANS_01",
         "PLANS_02",
+        "PLANS_02_9_TEXT", # free response ("Other" for PLANS_02)
         "PLANS_03",
     ],
     "INTEREST": [
@@ -76,12 +82,6 @@ QTYPES_CATEGORIZED = {
         "INTEREST_05",
     ],
     "FREE_RESPONSE": [
-        "ACCESS_01_7_TEXT",
-        "PRIOR_02_17_TEXT",
-        "ACCESS_02_10_TEXT",
-        "PRIOR_06_3_TEXT",
-        "MOTIVATION_01_8_TEXT",
-        "PLANS_02_9_TEXT",
         'PRIOR_04', # free response, both pre and post.
         'PRIOR_05', # free response, post only
         'PRIOR_07', # free response, post only
