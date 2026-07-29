@@ -19,21 +19,12 @@ RAW_FILES = [
 ]
 
 QTYPES_CATEGORIZED = {
-    "PRIOR": [
-        'PRIOR',
-    ],
-    "TIME": [
-        'TIME',
-    ],
-    "REWARD": [
-        'REWARD_01',
-        'REWARD_02',
-    ],
     "SUPPORT": [
         'SUPPORT_01',
         'SUPPORT_02',
         'SUPPORT_03',
         'SUPPORT_04',
+        "MENTOR_FORMAT_1_1",  # post only
     ],
     "PROFICIENCY_PROJ": [
         'PROFICIENCY_PROJ_01',
@@ -48,6 +39,10 @@ QTYPES_CATEGORIZED = {
         'PROFICIENCY_COMM_04',
         'PROFICIENCY_COMM_05',
     ],
+    "REWARD": [
+        'REWARD_01',
+        'REWARD_02',
+    ],
     "INTEREST": [
         "INTEREST_01",        # post only
         "INTEREST_02_1",      # post only - aspects ranking (one entry represents the whole ranking group)
@@ -58,8 +53,11 @@ QTYPES_CATEGORIZED = {
         "INTEREST_06",        # post only - free response
         "INTEREST_01_3_TEXT", # post only - free response ("Other" for INTEREST_01)
     ],
-    "MENTOR_FORMAT": [
-        "MENTOR_FORMAT_1_1",  # post only
+    "PRIOR": [
+        'PRIOR',
+    ],
+    "TIME": [
+        'TIME',
     ],
     "FREE_RESPONSE": [
         "FUTURE",  # free response
