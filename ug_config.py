@@ -16,9 +16,9 @@ DATA_FILES = {
 
 # Questions hidden from question picker at app runtime
 DROPPED_COLS = {
-    "comparison": ["PRIOR_01", "PRIOR_02", "PRIOR_02_17_TEXT", "ACCESS_01"],    # hidden from Pre/post comparison
-    "pre": [],                                                                  # hidden from Pre survey questions
-    "post": ["PRIOR_01", "PRIOR_02", "PRIOR_02_17_TEXT"],                       # hidden from Post survey questions
+    "comparison": ["PRIOR_01", "PRIOR_02", "PRIOR_02_17_TEXT", "ACCESS_01", "ACCESS_01_7_TEXT"], # hidden from Pre/post comparison
+    "pre": [],                                              # hidden from Pre survey questions
+    "post": ["PRIOR_01", "PRIOR_02", "PRIOR_02_17_TEXT"],   # hidden from Post survey questions
 }
 
 RAW_FILES = [
