@@ -48,9 +48,8 @@ def available_qtypes(
 def available_questions(
     dataset_key: str, df: pd.DataFrame, qtype: str, cols_dict: dict, dropped: set[str] | None = None
 ) -> list[str]:
-    # `dropped` questions are hidden from the pre/post comparison view only; the
-    # underlying columns stay in the data so filters that reference them still work.
-    drop = set(dropped) if (dropped and dataset_key == "comparison") else set()
+    # `dropped` questions are hidden from the current dataset view
+    drop = set(dropped) if dropped else set()
     if dataset_key == "comparison":
         return [
             col
@@ -59,7 +58,7 @@ def available_questions(
             and f"{col}_pre" in df.columns
             and f"{col}_post" in df.columns
         ]
-    return [col for col in cols_dict[qtype] if col in df.columns]
+    return [col for col in cols_dict[qtype] if col not in drop and col in df.columns]
 
 def question_text(dataset_key: str, df: pd.DataFrame, col: str) -> str:
     if dataset_key == "comparison":
@@ -411,8 +410,8 @@ def render_dashboard(cfg):
     # question's answer format by mapping its column back through COLS.
     col_to_format = {col:fmt for fmt,cols in cfg.COLS.items() for col in cols}
 
-    dropped_prepost = set(getattr(cfg, "PREPROCESS", {}).get("dropped_cols_prepost", []))
-    qtypes = available_qtypes(dataset_key, df, cfg.QTYPES_CATEGORIZED, dropped_prepost)
+    dropped = set(getattr(cfg, "DROPPED_COLS", {}).get(dataset_key, []))
+    qtypes = available_qtypes(dataset_key, df, cfg.QTYPES_CATEGORIZED, dropped)
     with st.sidebar:
         st.divider()
         qtype = st.selectbox(
@@ -420,7 +419,7 @@ def render_dashboard(cfg):
             qtypes,
             format_func=lambda value: cfg.QTYPE_CATEGORY_LABELS.get(value, value),
         )
-        question_ids = available_questions(dataset_key, df, qtype, cfg.QTYPES_CATEGORIZED, dropped_prepost)
+        question_ids = available_questions(dataset_key, df, qtype, cfg.QTYPES_CATEGORIZED, dropped)
         question_id = st.selectbox(
             "Question",
             question_ids,

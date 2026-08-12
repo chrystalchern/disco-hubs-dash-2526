@@ -5,13 +5,20 @@ PREPROCESS = {
     "post_main_data_file": APP_DIR / "grad_results_post_main_2026_05_16.csv",
     "hub_file": APP_DIR / "grad_official_hubs_cluster_sizes.csv",
     "cluster_size_file": APP_DIR / "grad_official_hubs_cluster_sizes.csv",
-    "dropped_cols_prepost": ["PRIOR"]
 }
 DATA_FILES = {
     "pre": APP_DIR / "grad_pre_all.csv",
     "post": APP_DIR / "grad_post_all.csv",
     "comparison": APP_DIR / "grad_pre_post_comparison.csv",
 }
+
+# Questions hidden from question picker at app runtime
+DROPPED_COLS = {
+    "comparison": ["PRIOR"],               # hidden from Pre/post comparison
+    "pre": [],                             # hidden from Pre survey questions
+    "post": [],                            # hidden from Post survey questions
+}
+
 RAW_FILES = [
     APP_DIR / "grad_results_pre_main_2025_10_01.csv",
     APP_DIR / "grad_results_post_main_2026_05_16.csv",
